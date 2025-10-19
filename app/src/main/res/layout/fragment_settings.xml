@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#f5f5f5">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profil &amp; Paramètres"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#1a1a1a"
+        android:layout_marginBottom="24dp" />
+
+    <CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        xmlns:card="http://schemas.android.com/apk/res-auto"
+        card:cardCornerRadius="8dp"
+        card:cardElevation="4dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Notification Settings"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#2196F3"
+                android:layout_marginBottom="12dp" />
+            <CheckBox
+                android:id="@+id/enableNotificationsCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enable Notifications"
+                android:checked="true"
+                android:textSize="14sp" />
+            <CheckBox
+                android:id="@+id/enableSoundCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enable Sound"
+                android:checked="true"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp" />
+            <CheckBox
+                android:id="@+id/enableVibrationCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enable Vibration"
+                android:checked="true"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </CardView>
+
+    <CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        xmlns:card="http://schemas.android.com/apk/res-auto"
+        card:cardCornerRadius="8dp"
+        card:cardElevation="4dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Location Settings"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#2196F3"
+                android:layout_marginBottom="12dp" />
+            <CheckBox
+                android:id="@+id/autoShareLocationCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Auto-share Location"
+                android:checked="true"
+                android:textSize="14sp" />
+            <CheckBox
+                android:id="@+id/highAccuracyCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="High Accuracy Mode"
+                android:checked="false"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </CardView>
+
+    <CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:card="http://schemas.android.com/apk/res-auto"
+        card:cardCornerRadius="8dp"
+        card:cardElevation="4dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="About"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#2196F3"
+                android:layout_marginBottom="12dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FindMyFriend v1.0"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginBottom="8dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="A location sharing app powered by SMS and GPS"
+                android:textSize="12sp"
+                android:textColor="#999999" />
+        </LinearLayout>
+    </CardView>
+
+</LinearLayout>
