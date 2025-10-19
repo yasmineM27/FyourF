@@ -50,4 +50,17 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
+    configurations.all {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk8")
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk7")
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10")
+    }
 }

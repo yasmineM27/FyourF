@@ -1,15 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FyourF</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="enter_phone">Enter phone number</string>
+    <string name="send_request">Send Request</string>
+    <string name="history">History</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_activity_history">history</string>
-    <string name="enter_phone">Enter friend\'s phone number</string>
-    <string name="send_request">Send Location Request</string>
-    <string name="location_received">Location Received</string>
-    <string name="view_on_map">View on Map</string>
-    <string name="history">Location History</string>
-    <string name="settings_title">Profil &amp; Paramètres</string>
-    <string name="dashboard_title">Find My Friend</string>
+
+
 
 </resources>
