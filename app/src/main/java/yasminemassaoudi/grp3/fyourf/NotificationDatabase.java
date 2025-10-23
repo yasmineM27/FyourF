@@ -51,8 +51,9 @@ public class NotificationDatabase extends SQLiteOpenHelper {
         values.put(COLUMN_LONGITUDE, longitude);
         values.put(COLUMN_TIMESTAMP, timestamp);
         values.put(COLUMN_READ, 0);
-        db.insert(TABLE_NAME, null, values);
+        long result = db.insert(TABLE_NAME, null, values);
         db.close();
+        android.util.Log.d("NotificationDatabase", "Notification added for " + phoneNumber + " at " + latitude + "," + longitude + " - Result: " + result);
     }
 
     public List<NotificationEntry> getAllNotifications() {

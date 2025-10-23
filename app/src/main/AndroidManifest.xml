@@ -2,11 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- SMS Permissions -->
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+
+    <!-- Location Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Foreground Service Permissions (Required for Android 9+) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+
+    <!-- Other Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -21,15 +30,12 @@
         android:theme="@style/Theme.FyourF"
         tools:targetApi="31">
 
+        <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCNWdjLOIiTpzRI4oo-k5kIBhNpqEH13OQ" />
 
-        <service
-            android:name=".MyService"
-            android:enabled="true"
-            android:exported="true" />
-
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -40,25 +46,33 @@
             </intent-filter>
         </activity>
 
+        <!-- Map Activity -->
         <activity
             android:name=".MapActivity"
             android:exported="false" />
 
-        <!-- BroadcastReceiver for SMS interception -->
+        <!-- SMS BroadcastReceiver (CRITICAL: High priority for auto-response) -->
         <receiver
             android:name=".SmsReceiver"
-            android:exported="true"
-            android:permission="android.permission.RECEIVE_SMS"
-            tools:ignore="MissingClass">
-            <intent-filter>
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="999">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
-        <!-- Background service for GPS location -->
+        <!-- Location Service (Foreground Service) -->
         <service
             android:name=".LocationService"
-            android:exported="false" />
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <!-- Legacy Service (if needed) -->
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true" />
 
     </application>
 

@@ -35,9 +35,21 @@ public class LocationHistoryAdapter extends ArrayAdapter<LocationDatabase.Locati
         TextView title = convertView.findViewById(android.R.id.text1);
         TextView subtitle = convertView.findViewById(android.R.id.text2);
 
-        title.setText("From: " + entry.phone);
-        subtitle.setText(LocationUtils.formatTimestamp(entry.timestamp) + " - " +
-                String.format("%.4f, %.4f", entry.latitude, entry.longitude));
+        title.setText("📞 " + entry.phone);
+        String coords = String.format("%.6f, %.6f", entry.latitude, entry.longitude);
+        String time = LocationUtils.formatTimestamp(entry.timestamp);
+        subtitle.setText("📍 " + coords + " 🕒 " + time);
+
+        // Validate coordinates - if they're 0.0,0.0 or 999.0,999.0, show as "No location data"
+        if ((entry.latitude == 0.0 && entry.longitude == 0.0) ||
+            (entry.latitude == 999.0 && entry.longitude == 999.0)) {
+            subtitle.setText("📍 Waiting for location response 🕒 " + time);
+            convertView.setAlpha(0.6f); // Make it more transparent
+            title.setText("⏳ " + entry.phone + " (pending)");
+        } else {
+            convertView.setAlpha(1.0f);
+            title.setText("📞 " + entry.phone);
+        }
 
         convertView.setOnClickListener(v -> {
             Intent mapIntent = new Intent(context, MapActivity.class);

@@ -42,12 +42,29 @@ public class LocationDatabase extends SQLiteOpenHelper {
 
     public void addLocation(String phone, double latitude, double longitude) {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        // Check if entry already exists for this phone number
+        Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_ID},
+                COLUMN_PHONE + "=?", new String[]{phone},
+                null, null, null);
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_PHONE, phone);
         values.put(COLUMN_LATITUDE, latitude);
         values.put(COLUMN_LONGITUDE, longitude);
         values.put(COLUMN_TIMESTAMP, System.currentTimeMillis());
-        db.insert(TABLE_NAME, null, values);
+
+        if (cursor.moveToFirst()) {
+            // Update existing entry
+            int rowsAffected = db.update(TABLE_NAME, values, COLUMN_PHONE + "=?", new String[]{phone});
+            android.util.Log.d("LocationDatabase", "Location updated for " + phone + " at " + latitude + "," + longitude + " - Rows affected: " + rowsAffected);
+        } else {
+            // Insert new entry
+            long result = db.insert(TABLE_NAME, null, values);
+            android.util.Log.d("LocationDatabase", "Location added for " + phone + " at " + latitude + "," + longitude + " - Result: " + result);
+        }
+
+        cursor.close();
         db.close();
     }
 
@@ -79,18 +96,22 @@ public class LocationDatabase extends SQLiteOpenHelper {
     }
 
     public void deleteAllLocations() {
-        
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+        db.close();
+        android.util.Log.d("LocationDatabase", "All locations deleted");
     }
 
     public static class LocationEntry {
         public String phone;
+        public String phoneNumber; // Alias for compatibility
         public double latitude;
         public double longitude;
         public long timestamp;
-        public String phoneNumber;
 
         public LocationEntry(String phone, double latitude, double longitude, long timestamp) {
             this.phone = phone;
+            this.phoneNumber = phone; // Set both for compatibility
             this.latitude = latitude;
             this.longitude = longitude;
             this.timestamp = timestamp;
