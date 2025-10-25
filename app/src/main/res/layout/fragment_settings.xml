@@ -1,27 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#f5f5f5">
+    android:background="@color/gray_light">
 
-    <TextView
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Header with Logo -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profil &amp; Paramètres"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="#1a1a1a"
-        android:layout_marginBottom="24dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp">
 
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/fyourf_logo"
+            android:contentDescription="FyourF Logo"
+            android:layout_marginEnd="12dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="⚙️ Settings"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_blue" />
+    </LinearLayout>
+
+    <!-- Notification Settings Card -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        card:cardCornerRadius="8dp"
-        card:cardElevation="4dp">
+        card:cardCornerRadius="12dp"
+        card:cardElevation="4dp"
+        card:cardBackgroundColor="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,10 +55,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Notification Settings"
+                android:text="🔔 Notification Settings"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#2196F3"
+                android:textColor="@color/primary_blue"
                 android:layout_marginBottom="12dp" />
 
             <CheckBox
@@ -44,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:text="Enable Notifications"
                 android:checked="true"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:buttonTint="@color/primary_blue" />
 
             <CheckBox
                 android:id="@+id/enableSoundCheckbox"
@@ -53,6 +77,7 @@
                 android:text="Enable Sound"
                 android:checked="true"
                 android:textSize="14sp"
+                android:buttonTint="@color/primary_blue"
                 android:layout_marginTop="8dp" />
 
             <CheckBox
@@ -62,16 +87,19 @@
                 android:text="Enable Vibration"
                 android:checked="true"
                 android:textSize="14sp"
+                android:buttonTint="@color/primary_blue"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Location Settings Card -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        card:cardCornerRadius="8dp"
-        card:cardElevation="4dp">
+        card:cardCornerRadius="12dp"
+        card:cardElevation="4dp"
+        card:cardBackgroundColor="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,10 +110,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location Settings"
+                android:text="📍 Location Settings"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#2196F3"
+                android:textColor="@color/primary_blue"
                 android:layout_marginBottom="12dp" />
 
             <CheckBox
@@ -94,7 +122,8 @@
                 android:layout_height="wrap_content"
                 android:text="Auto-share Location"
                 android:checked="true"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:buttonTint="@color/accent_green_dark" />
 
             <CheckBox
                 android:id="@+id/highAccuracyCheckbox"
@@ -103,46 +132,74 @@
                 android:text="High Accuracy Mode"
                 android:checked="false"
                 android:textSize="14sp"
+                android:buttonTint="@color/accent_green_dark"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- About Card -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card:cardCornerRadius="8dp"
-        card:cardElevation="4dp">
+        card:cardCornerRadius="12dp"
+        card:cardElevation="4dp"
+        card:cardBackgroundColor="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:background="@color/primary_blue">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/fyourf_logo"
+                    android:contentDescription="FyourF Logo"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="centerCrop" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="FyourF - FindMyFriend"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Version 1.0"
+                        android:textSize="14sp"
+                        android:textColor="@color/accent_green_light"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="About"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:layout_marginBottom="12dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="FindMyFriend v1.0"
-                android:textSize="14sp"
-                android:textColor="#666666"
-                android:layout_marginBottom="8dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="A location sharing app powered by SMS and GPS"
-                android:textSize="12sp"
-                android:textColor="#999999" />
+                android:text="A location sharing app powered by SMS and GPS technology. Share your location with friends easily and securely."
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:lineSpacingMultiplier="1.3" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>
+</ScrollView>

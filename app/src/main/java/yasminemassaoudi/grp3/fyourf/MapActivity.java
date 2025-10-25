@@ -81,7 +81,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(friendLocation)
                     .title(friendName != null ? friendName : "Friend's Location")
-                    .snippet("📍 Lat: " + String.format("%.6f", latitude) + "\n📍 Lon: " + String.format("%.6f", longitude))
+                    .snippet(" Lat: " + String.format("%.6f", latitude) + "\n Lon: " + String.format("%.6f", longitude))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
             mMap.addMarker(markerOptions);
@@ -103,7 +103,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     String address = LocationUtils.getAddressFromCoordinates(this, latitude, longitude);
                     runOnUiThread(() -> {
                         if (address != null && !address.isEmpty()) {
-                            Toast.makeText(this, "📍 " + address, Toast.LENGTH_LONG).show();
+                            Toast.makeText(this,  address, Toast.LENGTH_LONG).show();
                         }
                     });
                 } catch (Exception e) {

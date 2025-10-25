@@ -11,41 +11,59 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Info Card Overlay -->
+    <!-- Info Card Overlay with Logo -->
     <androidx.cardview.widget.CardView
         android:id="@+id/infoCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="16dp"
-        card:cardCornerRadius="8dp"
-        card:cardElevation="6dp"
-        android:alpha="0.95">
+        card:cardCornerRadius="12dp"
+        card:cardElevation="8dp"
+        android:alpha="0.97"
+        card:cardBackgroundColor="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            android:background="@color/primary_blue">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="📍 Friends Map"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#2196F3"
-                android:gravity="center" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/fyourf_logo"
+                android:contentDescription="FyourF Logo"
+                android:layout_marginEnd="12dp"
+                android:scaleType="centerCrop" />
 
-            <TextView
-                android:id="@+id/friendCountText"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="No friends' locations yet"
-                android:textSize="14sp"
-                android:textColor="#666666"
-                android:gravity="center"
-                android:layout_marginTop="4dp" />
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📍 Friends Map"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:gravity="start" />
+
+                <TextView
+                    android:id="@+id/friendCountText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No friends' locations yet"
+                    android:textSize="13sp"
+                    android:textColor="@color/accent_green_light"
+                    android:gravity="start"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -59,6 +77,7 @@
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_menu_rotate"
         android:contentDescription="Refresh map"
-        card:backgroundTint="#2196F3" />
+        card:backgroundTint="@color/accent_green"
+        card:tint="@color/primary_blue_dark" />
 
 </RelativeLayout>

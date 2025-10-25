@@ -59,9 +59,9 @@ public class NotificationHelper {
                 .setContentTitle("Location from " + friendPhone)
                 .setContentText("Tap to view on map")
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("📍 " + address + "\n" +
-                                "📊 " + String.format("%.6f, %.6f", latitude, longitude) + "\n" +
-                                "🕒 " + new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date())))
+                        .bigText( address + "\n" +
+                                 String.format("%.6f, %.6f", latitude, longitude) + "\n" +
+                                 new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date())))
                 .setAutoCancel(true)
                 .setContentIntent(mapPendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

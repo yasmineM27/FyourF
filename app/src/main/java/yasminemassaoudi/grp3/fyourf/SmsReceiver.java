@@ -170,7 +170,7 @@ public class SmsReceiver extends BroadcastReceiver {
             Log.d(TAG, "✓ Location parsed successfully - Lat: " + latitude + ", Lon: " + longitude);
 
             // Show toast for location received
-            showToast(context, "📍 Location received from " + senderNumber);
+            showToast(context, " Location received from " + senderNumber);
 
             // Store in location database
             LocationDatabase db = new LocationDatabase(context);
@@ -182,13 +182,13 @@ public class SmsReceiver extends BroadcastReceiver {
             String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
                     java.util.Locale.getDefault()).format(new java.util.Date());
             notifDb.addNotification(senderNumber, latitude, longitude, timestamp);
-            Log.d(TAG, "✓ Notification stored in NotificationDatabase");
+            Log.d(TAG, "Notification stored in NotificationDatabase");
 
             // Show notification if enabled
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             if (prefs.getBoolean("notifications_enabled", true)) {
                 NotificationHelper.showLocationNotification(context, senderNumber, latitude, longitude);
-                Log.d(TAG, "✓ Location notification shown");
+                Log.d(TAG, " Location notification shown");
             } else {
                 Log.d(TAG, "Notifications disabled in preferences");
             }
