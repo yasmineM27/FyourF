@@ -19,34 +19,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="8dp">
         <Button
             android:id="@+id/sortByDateBtn"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:text="Sort by Date"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:background="#2196F3"
             android:textColor="@android:color/white"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="4dp" />
         <Button
             android:id="@+id/sortByPhoneBtn"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:text="Sort by Phone"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:background="#2196F3"
             android:textColor="@android:color/white"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="4dp" />
+        <Button
+            android:id="@+id/refreshBtn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Refresh"
+            android:textSize="11sp"
+            android:background="#FF9800"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="4dp" />
         <Button
             android:id="@+id/exportHistoryBtn"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:text="Export"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:background="#4CAF50"
             android:textColor="@android:color/white" />
     </LinearLayout>

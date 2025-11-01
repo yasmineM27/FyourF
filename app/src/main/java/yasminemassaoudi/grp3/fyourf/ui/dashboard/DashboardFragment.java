@@ -42,6 +42,7 @@ public class DashboardFragment extends Fragment {
     
     private BroadcastReceiver sentReceiver;
     private BroadcastReceiver deliveredReceiver;
+    private BroadcastReceiver locationUpdateReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,8 +55,9 @@ public class DashboardFragment extends Fragment {
         recentContactsList = view.findViewById(R.id.recentContactsList);
 
         locationDatabase = new LocationDatabase(getContext());
-        
+
         setupSmsReceivers();
+        setupLocationUpdateReceiver();
         loadRecentContacts();
 
         sendRequestBtn.setOnClickListener(v -> sendLocationRequest());
@@ -118,6 +120,35 @@ public class DashboardFragment extends Fragment {
                     context,
                     deliveredReceiver,
                     new IntentFilter(SMS_DELIVERED),
+                    ContextCompat.RECEIVER_NOT_EXPORTED
+            );
+        }
+    }
+
+    private void setupLocationUpdateReceiver() {
+        locationUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String phoneNumber = intent.getStringExtra("phoneNumber");
+                double latitude = intent.getDoubleExtra("latitude", 0.0);
+                double longitude = intent.getDoubleExtra("longitude", 0.0);
+
+                Log.d(TAG, "Location update received for " + phoneNumber + ": " + latitude + ", " + longitude);
+
+                // Refresh the list to show updated location
+                loadRecentContacts();
+
+                Toast.makeText(context, "Location received from " + phoneNumber, Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        // Register receiver
+        Context context = getContext();
+        if (context != null) {
+            ContextCompat.registerReceiver(
+                    context,
+                    locationUpdateReceiver,
+                    new IntentFilter("LOCATION_UPDATED"),
                     ContextCompat.RECEIVER_NOT_EXPORTED
             );
         }
@@ -243,10 +274,17 @@ public class DashboardFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // Unregister receivers to prevent memory leaks
-        if (getContext() != null && sentReceiver != null) {
+        if (getContext() != null) {
             try {
-                getContext().unregisterReceiver(sentReceiver);
-                getContext().unregisterReceiver(deliveredReceiver);
+                if (sentReceiver != null) {
+                    getContext().unregisterReceiver(sentReceiver);
+                }
+                if (deliveredReceiver != null) {
+                    getContext().unregisterReceiver(deliveredReceiver);
+                }
+                if (locationUpdateReceiver != null) {
+                    getContext().unregisterReceiver(locationUpdateReceiver);
+                }
             } catch (IllegalArgumentException e) {
                 Log.w(TAG, "Receiver not registered: " + e.getMessage());
             }

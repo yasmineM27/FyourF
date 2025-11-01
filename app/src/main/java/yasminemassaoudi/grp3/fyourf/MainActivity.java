@@ -1,9 +1,17 @@
 package yasminemassaoudi.grp3.fyourf;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -11,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import yasminemassaoudi.grp3.fyourf.HistoryFragment;
 import yasminemassaoudi.grp3.fyourf.NotificationsFragment;
@@ -29,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Bouton FAB pour le tracking
+        FloatingActionButton fabTracking = findViewById(R.id.fabTracking);
+        if (fabTracking != null) {
+            fabTracking.setOnClickListener(v -> openTrackingActivity());
+        }
 
         requestPermissions();
 
@@ -64,6 +79,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_tracking) {
+            openTrackingActivity();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openTrackingActivity() {
+        Intent intent = new Intent(this, TrackingActivity.class);
+        startActivity(intent);
+    }
+
     private void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -89,6 +124,52 @@ public class MainActivity extends AppCompatActivity {
                                 Manifest.permission.POST_NOTIFICATIONS
                         },
                         PERMISSION_REQUEST_CODE);
+            }
+        }
+
+        // Request background location permission separately (required for Android 10+)
+        requestBackgroundLocationPermission();
+
+        // Request battery optimization exemption
+        requestBatteryOptimizationExemption();
+    }
+
+    private void requestBackgroundLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Show explanation dialog first
+                new AlertDialog.Builder(this)
+                        .setTitle("Background Location Permission")
+                        .setMessage("This app needs background location access to send your location even when the app is closed or the phone is locked. Please select 'Allow all the time' in the next screen.")
+                        .setPositiveButton("OK", (dialog, which) -> {
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                                    PERMISSION_REQUEST_CODE + 1);
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            }
+        }
+    }
+
+    private void requestBatteryOptimizationExemption() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            String packageName = getPackageName();
+
+            if (powerManager != null && !powerManager.isIgnoringBatteryOptimizations(packageName)) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Battery Optimization")
+                        .setMessage("To ensure location sharing works even when the phone is locked, please disable battery optimization for this app.")
+                        .setPositiveButton("OK", (dialog, which) -> {
+                            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                            intent.setData(Uri.parse("package:" + packageName));
+                            startActivity(intent);
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
             }
         }
     }

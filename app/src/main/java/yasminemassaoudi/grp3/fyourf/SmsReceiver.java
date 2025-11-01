@@ -167,15 +167,31 @@ public class SmsReceiver extends BroadcastReceiver {
                 return;
             }
 
-            Log.d(TAG, "✓ Location parsed successfully - Lat: " + latitude + ", Lon: " + longitude);
+            Log.d(TAG, "Location parsed successfully - Lat: " + latitude + ", Lon: " + longitude);
 
             // Show toast for location received
-            showToast(context, " Location received from " + senderNumber);
+            showToast(context, "Location received from " + senderNumber);
 
-            // Store in location database
+            // Store in location database (local)
             LocationDatabase db = new LocationDatabase(context);
             db.addLocation(senderNumber, latitude, longitude);
-            Log.d(TAG, "✓ Location stored in LocationDatabase");
+            Log.d(TAG, "Location stored in LocationDatabase");
+
+            // Store in MySQL if enabled
+            if (Config.USE_MYSQL) {
+                MySQLLocationService mysqlService = new MySQLLocationService();
+                mysqlService.addOrUpdatePosition(senderNumber, latitude, longitude, new MySQLLocationService.OperationCallback() {
+                    @Override
+                    public void onSuccess(String message) {
+                        Log.d(TAG, "✓ Location saved to MySQL: " + message);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e(TAG, "✗ MySQL save error: " + error);
+                    }
+                });
+            }
 
             // Store in notification database
             NotificationDatabase notifDb = new NotificationDatabase(context);
@@ -188,7 +204,7 @@ public class SmsReceiver extends BroadcastReceiver {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             if (prefs.getBoolean("notifications_enabled", true)) {
                 NotificationHelper.showLocationNotification(context, senderNumber, latitude, longitude);
-                Log.d(TAG, " Location notification shown");
+                Log.d(TAG, "Location notification shown");
             } else {
                 Log.d(TAG, "Notifications disabled in preferences");
             }
@@ -199,7 +215,7 @@ public class SmsReceiver extends BroadcastReceiver {
             broadcastIntent.putExtra("latitude", latitude);
             broadcastIntent.putExtra("longitude", longitude);
             context.sendBroadcast(broadcastIntent);
-            Log.d(TAG, "✓ Location update broadcast sent");
+            Log.d(TAG, "Location update broadcast sent");
 
         } catch (NumberFormatException e) {
             Log.e(TAG, "Error parsing coordinates: " + e.getMessage());

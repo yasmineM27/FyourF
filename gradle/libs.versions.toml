@@ -15,6 +15,10 @@ playServicesMaps = "19.2.0"
 preference = "1.2.1"
 cardview = "1.0.0"
 authApiImpl = "11.6.0"
+supabase = "2.0.0"
+ktor = "2.3.7"
+kotlinxCoroutines = "1.7.3"
+kotlinxSerialization = "1.6.2"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -32,6 +36,16 @@ play-services-maps = { group = "com.google.android.gms", name = "play-services-m
 preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 auth-api-impl = { group = "com.google.android.gms", name = "auth-api-impl", version.ref = "authApiImpl" }
+
+# Supabase dependencies
+supabase-postgrest = { group = "io.github.jan-tennert.supabase", name = "postgrest-kt", version.ref = "supabase" }
+supabase-realtime = { group = "io.github.jan-tennert.supabase", name = "realtime-kt", version.ref = "supabase" }
+ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-utils = { group = "io.ktor", name = "ktor-utils", version.ref = "ktor" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
