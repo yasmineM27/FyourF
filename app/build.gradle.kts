@@ -47,6 +47,9 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.preference)
 
+    // Volley for HTTP requests
+    implementation("com.android.volley:volley:1.2.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -13,7 +13,7 @@ public class Config {
     // ============================================
     // IMPORTANT: Modifier cette IP avec votre adresse IPv4
     // Pour trouver votre IPv4: Windows CMD > ipconfig
-    public static String MYSQL_SERVER_IP = "192.168.56.1"; // MODIFIER ICI
+    public static String MYSQL_SERVER_IP = "192.168.1.19"; // MODIFIER ICI
     public static int MYSQL_SERVER_PORT = 80;
     public static String MYSQL_SERVICE_FOLDER = "servicephp";
 
@@ -25,7 +25,7 @@ public class Config {
     // ============================================
     // LEGACY SERVER CONFIGURATION
     // ============================================
-    public static String IP_Serveur = "192.168.1.10";
+    public static String IP_Serveur = "192.168.1.19";
     public static int PORT_Serveur = 8080;
     public static String URL_Serveur = "http://" + IP_Serveur + ":" + PORT_Serveur;
 

@@ -22,9 +22,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.button.MaterialButton;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import yasminemassaoudi.grp3.fyourf.Config;
@@ -41,42 +44,114 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private LocationDatabase locationDatabase;
     private MySQLLocationService mysqlService;
     private TextView friendCountText;
-    private FloatingActionButton refreshMapBtn;
+    private TextView lastUpdateText;
+    private MaterialButton refreshMapBtn;
+    private MaterialButton centerMapBtn;
+    private MaterialButton filterBtn;
     private Map<String, Marker> markerMap = new HashMap<>();
     private BroadcastReceiver locationUpdateReceiver;
+    private LatLngBounds lastBounds;
+    private long lastUpdateTime = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        try {
+            View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        friendCountText = view.findViewById(R.id.friendCountText);
-        refreshMapBtn = view.findViewById(R.id.refreshMapBtn);
+            // Initialize UI elements
+            friendCountText = view.findViewById(R.id.friendCountText);
+            lastUpdateText = view.findViewById(R.id.lastUpdateText);
+            refreshMapBtn = view.findViewById(R.id.refreshMapBtn);
+            centerMapBtn = view.findViewById(R.id.centerMapBtn);
+            filterBtn = view.findViewById(R.id.filterBtn);
 
-        locationDatabase = new LocationDatabase(getContext());
+            locationDatabase = new LocationDatabase(getContext());
 
-        // Initialiser le service MySQL si activé
-        if (Config.USE_MYSQL) {
-            mysqlService = new MySQLLocationService();
-            Log.d(TAG, "✓ Service MySQL initialisé");
+            // Initialiser le service MySQL si activé
+            if (Config.USE_MYSQL) {
+                mysqlService = new MySQLLocationService();
+                Log.d(TAG, "✅ Service MySQL initialisé");
+            }
+
+            // Initialize map
+            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                    .findFragmentById(R.id.map);
+            if (mapFragment != null) {
+                mapFragment.getMapAsync(this);
+            }
+
+            // Setup button listeners
+            setupButtonListeners();
+
+            // Setup broadcast receiver for real-time updates
+            setupLocationUpdateReceiver();
+
+            Log.d(TAG, "HomeFragment créé avec succès");
+            return view;
+        } catch (Exception e) {
+            Log.e(TAG, "Erreur onCreateView: " + e.getMessage(), e);
+            Toast.makeText(getContext(), "Erreur: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            return inflater.inflate(R.layout.fragment_home, container, false);
         }
+    }
 
-        // Initialize map
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
+    private void setupButtonListeners() {
+        try {
+            // Refresh button
+            if (refreshMapBtn != null) {
+                refreshMapBtn.setOnClickListener(v -> {
+                    Log.d(TAG, "Refresh button clicked");
+                    loadFriendLocations();
+                    updateLastUpdateTime();
+                    Toast.makeText(getContext(), "Carte actualisée", Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            // Center button
+            if (centerMapBtn != null) {
+                centerMapBtn.setOnClickListener(v -> {
+                    Log.d(TAG, "Center button clicked");
+                    if (lastBounds != null && mMap != null) {
+                        try {
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(lastBounds, 100));
+                            Toast.makeText(getContext(), "📍 Centrage sur tous les amis", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Log.e(TAG, "Erreur centrage: " + e.getMessage());
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "⚠️ Aucune position à centrer", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            // Filter button
+            if (filterBtn != null) {
+                filterBtn.setOnClickListener(v -> {
+                    Log.d(TAG, "Filter button clicked");
+                    showFilterDialog();
+                });
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Erreur setupButtonListeners: " + e.getMessage(), e);
         }
+    }
 
-        // Setup refresh button
-        refreshMapBtn.setOnClickListener(v -> {
-            loadFriendLocations();
-            Toast.makeText(getContext(), "Map refreshed", Toast.LENGTH_SHORT).show();
-        });
+    private void updateLastUpdateTime() {
+        try {
+            lastUpdateTime = System.currentTimeMillis();
+            if (lastUpdateText != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                String timeStr = sdf.format(new Date(lastUpdateTime));
+                lastUpdateText.setText(timeStr);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Erreur updateLastUpdateTime: " + e.getMessage());
+        }
+    }
 
-        // Setup broadcast receiver for real-time updates
-        setupLocationUpdateReceiver();
-
-        return view;
+    private void showFilterDialog() {
+        Toast.makeText(getContext(), "🔍 Filtre - Fonctionnalité à venir", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Filter dialog - À implémenter");
     }
 
     @Override
@@ -111,7 +186,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 // Reload all locations to update the map
                 loadFriendLocations();
 
-                Toast.makeText(context, "📍 Location updated for " + phoneNumber, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Location updated for " + phoneNumber, Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -217,70 +292,81 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
      * Charge les positions depuis la base de données locale
      */
     private void loadFromLocalDatabase() {
-        Log.d(TAG, "Chargement depuis la base locale...");
+        try {
+            Log.d(TAG, "Chargement depuis la base locale...");
 
-        // Clear existing markers (vérifier que mMap n'est pas null)
-        if (mMap != null) {
-            mMap.clear();
-        }
-        markerMap.clear();
-
-        // Get all locations from database
-        List<LocationDatabase.LocationEntry> locations = locationDatabase.getAllLocations();
-
-        Log.d(TAG, "Loading " + locations.size() + " friend locations");
-
-        int validLocationCount = 0;
-        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
-        boolean hasValidLocations = false;
-
-        for (LocationDatabase.LocationEntry entry : locations) {
-            // Skip invalid or pending locations
-            if ((entry.latitude == 0.0 && entry.longitude == 0.0) ||
-                (entry.latitude == 999.0 && entry.longitude == 999.0)) {
-                Log.d(TAG, "Skipping invalid location for " + entry.phoneNumber);
-                continue;
-            }
-
-            validLocationCount++;
-            LatLng position = new LatLng(entry.latitude, entry.longitude);
-
-            // Add marker (vérifier que mMap n'est pas null)
+            // Clear existing markers (vérifier que mMap n'est pas null)
             if (mMap != null) {
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(position)
-                        .title(entry.phoneNumber)
-                        .snippet("📍 " + String.format("%.6f, %.6f", entry.latitude, entry.longitude))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-
-                Marker marker = mMap.addMarker(markerOptions);
-                markerMap.put(entry.phoneNumber, marker);
-
-                boundsBuilder.include(position);
-                hasValidLocations = true;
-
-                Log.d(TAG, "Added marker for " + entry.phoneNumber + " at " + position);
+                mMap.clear();
             }
-        }
+            markerMap.clear();
 
-        // Update friend count text
-        if (validLocationCount == 0) {
-            friendCountText.setText("No friends' locations yet");
-        } else if (validLocationCount == 1) {
-            friendCountText.setText("1 friend's location");
-        } else {
-            friendCountText.setText(validLocationCount + " friends' locations");
-        }
+            // Get all locations from database
+            List<LocationDatabase.LocationEntry> locations = locationDatabase.getAllLocations();
 
-        // Adjust camera to show all markers
-        if (hasValidLocations && mMap != null) {
-            try {
-                LatLngBounds bounds = boundsBuilder.build();
-                int padding = 100; // padding in pixels
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
-            } catch (Exception e) {
-                Log.e(TAG, "Error adjusting camera: " + e.getMessage());
+            Log.d(TAG, "📍 Chargement de " + locations.size() + " positions d'amis");
+
+            int validLocationCount = 0;
+            LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+            boolean hasValidLocations = false;
+
+            for (LocationDatabase.LocationEntry entry : locations) {
+                // Skip invalid or pending locations
+                if ((entry.latitude == 0.0 && entry.longitude == 0.0) ||
+                    (entry.latitude == 999.0 && entry.longitude == 999.0)) {
+                    Log.d(TAG, "Position invalide pour " + entry.phoneNumber);
+                    continue;
+                }
+
+                validLocationCount++;
+                LatLng position = new LatLng(entry.latitude, entry.longitude);
+
+                // Add marker (vérifier que mMap n'est pas null)
+                if (mMap != null) {
+                    // Utiliser des couleurs différentes pour les marqueurs
+                    float hue = (validLocationCount % 10) * 36; // Couleurs variées
+
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(position)
+                            .title(entry.phoneNumber)
+                            .snippet("📍 " + String.format("%.6f, %.6f", entry.latitude, entry.longitude))
+                            .icon(BitmapDescriptorFactory.defaultMarker(hue));
+
+                    Marker marker = mMap.addMarker(markerOptions);
+                    markerMap.put(entry.phoneNumber, marker);
+
+                    boundsBuilder.include(position);
+                    hasValidLocations = true;
+
+                    Log.d(TAG, "✅ Marqueur ajouté pour " + entry.phoneNumber + " à " + position);
+                }
             }
+
+            // Update friend count text with emoji
+            if (validLocationCount == 0) {
+                friendCountText.setText("0 Friends");
+            } else if (validLocationCount == 1) {
+                friendCountText.setText("1 Friend");
+            } else {
+                friendCountText.setText(validLocationCount + " Friends");
+            }
+
+            // Update last update time
+            updateLastUpdateTime();
+
+            // Adjust camera to show all markers
+            if (hasValidLocations && mMap != null) {
+                try {
+                    lastBounds = boundsBuilder.build();
+                    int padding = 100; // padding in pixels
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(lastBounds, padding));
+                    Log.d(TAG, "✅ Caméra centrée sur " + validLocationCount + " positions");
+                } catch (Exception e) {
+                    Log.e(TAG, "❌ Erreur centrage caméra: " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "❌ Erreur loadFromLocalDatabase: " + e.getMessage(), e);
         }
     }
 

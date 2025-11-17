@@ -7,6 +7,8 @@
     <color name="accent_green">#b0f2b6</color>
     <color name="accent_green_dark">#8dd995</color>
     <color name="accent_green_light">#d0f7d4</color>
+    <color name="accent_orange">#FF9800</color>
+    <color name="accent_orange_dark">#F57C00</color>
 
     <!-- Standard colors -->
     <color name="black">#FF000000</color>
