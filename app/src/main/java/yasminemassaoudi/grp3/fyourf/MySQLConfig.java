@@ -21,7 +21,7 @@ public class MySQLConfig {
      * Adresse IP de votre serveur PHP
      * IMPORTANT: Remplacer par votre IPv4
      */
-    public static final String MYSQL_SERVER_IP = "192.168.1.18";
+    public static final String MYSQL_SERVER_IP = "192.168.178.115";
     
     /**
      * Port du serveur (80 par défaut pour Apache)

@@ -26,6 +26,8 @@ import yasminemassaoudi.grp3.fyourf.NotificationsFragment;
 import yasminemassaoudi.grp3.fyourf.SettingsFragment;
 import yasminemassaoudi.grp3.fyourf.ui.dashboard.DashboardFragment;
 import yasminemassaoudi.grp3.fyourf.ui.home.HomeFragment;
+import yasminemassaoudi.grp3.fyourf.ui.geoquiz.GeoQuizFragment;
+import yasminemassaoudi.grp3.fyourf.ui.geoquiz.BadgesFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,20 +56,30 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment fragment = null;
+            android.util.Log.d("MainActivity", "Menu item clicked: " + item.getItemId());
 
             if (item.getItemId() == R.id.nav_home) {
+                android.util.Log.d("MainActivity", "Loading HomeFragment");
                 fragment = new HomeFragment();
             } else if (item.getItemId() == R.id.nav_dashboard) {
+                android.util.Log.d("MainActivity", "Loading DashboardFragment");
                 fragment = new DashboardFragment();
             } else if (item.getItemId() == R.id.nav_history) {
+                android.util.Log.d("MainActivity", "Loading HistoryFragment");
                 fragment = new HistoryFragment();
             } else if (item.getItemId() == R.id.nav_notifications) {
+                android.util.Log.d("MainActivity", "Loading NotificationsFragment");
                 fragment = new NotificationsFragment();
             } else if (item.getItemId() == R.id.nav_settings) {
+                android.util.Log.d("MainActivity", "Loading SettingsFragment");
                 fragment = new SettingsFragment();
+            } else if (item.getItemId() == R.id.nav_geoquiz) {
+                android.util.Log.d("MainActivity", "✓ Loading GeoQuizFragment");
+                fragment = new GeoQuizFragment();
             }
 
             if (fragment != null) {
+                android.util.Log.d("MainActivity", "Loading fragment: " + fragment.getClass().getSimpleName());
                 loadFragment(fragment);
             }
             return true;

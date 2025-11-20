@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header avec score et streak -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_background"
+            android:padding="16dp"
+            android:elevation="8dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Score"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_dark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/scoreTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_blue"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🔥 Streak"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_dark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/streakTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/red"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Barre de progression -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_bar_style" />
+
+        <!-- Numéro de question -->
+        <TextView
+            android:id="@+id/questionNumberTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Question 1/10"
+            android:textSize="14sp"
+            android:textColor="@color/dark_blue"
+            android:layout_marginBottom="12dp"
+            android:textStyle="bold" />
+
+        <!-- Image de la carte avec CardView -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_background"
+            android:elevation="4dp">
+
+            <ImageView
+                android:id="@+id/mapImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@color/gray_light" />
+
+            <!-- Loading indicator -->
+            <ProgressBar
+                android:id="@+id/imageLoadingProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- Informations de la question -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_background"
+            android:padding="12dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Région"
+                    android:textSize="10sp"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/regionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_blue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Catégorie"
+                    android:textSize="10sp"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/categoryTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_blue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Difficulté"
+                    android:textSize="10sp"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/difficultyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_blue" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Timer and Hint Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/timerTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="⏱️ 30s"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/dark_blue"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/hintButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="💡 Hint (3)"
+                android:textSize="12sp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:backgroundTint="@color/dark_blue"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <!-- Question Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Où cette photo a-t-elle été prise ?"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/dark_blue"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Options de réponse -->
+        <RadioGroup
+            android:id="@+id/optionsRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical" />
+
+        <!-- Boutons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Soumettre"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/dark_blue"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Suivant"
+                android:enabled="false"
+                android:backgroundTint="@color/green"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+

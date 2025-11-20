@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification des Données MySQL - FyourF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .card-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .card-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            color: #667eea;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .success {
+            background: #efe;
+            color: #3c3;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Vérification des Données MySQL</h1>
+            <p>FyourF - Système de Suivi GPS</p>
+        </div>
+        
+        <div id="content">
+            <div class="loading">
+                <p>⏳ Chargement des données...</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Créé le 2025-11-20 | FyourF v1.0</p>
+        </div>
+    </div>
+    
+    <script>
+        // Charger les données
+        fetch('check_all_data.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    displayData(data);
+                } else {
+                    displayError(data.error);
+                }
+            })
+            .catch(error => {
+                displayError('Erreur de connexion: ' + error.message);
+            });
+        
+        function displayData(data) {
+            const summary = data.data.summary;
+            const positions = data.data.positions;
+            const questions = data.data.questions;
+            const scores = data.data.scores;
+            const badges = data.data.badges;
+            
+            let html = '<div class="success">✅ Données chargées avec succès!</div>';
+            
+            // Grille de résumé
+            html += '<div class="grid">';
+            html += createCard('📍 Positions', summary.total_positions, 'Total');
+            html += createCard('📚 Questions', summary.total_questions, 'Total');
+            html += createCard('🎯 Scores', summary.total_scores, 'Total');
+            html += createCard('🏆 Badges', summary.total_badges, 'Total');
+            html += createCard('🔓 Badges Déverrouillés', summary.unlocked_badges, 'Déverrouillés');
+            html += '</div>';
+            
+            // Détails des positions
+            html += '<div class="card">';
+            html += '<h2>📍 Positions</h2>';
+            html += '<p><strong>Total:</strong> ' + positions.total + '</p>';
+            if (positions.last_10.length > 0) {
+                html += '<table>';
+                html += '<tr><th>ID</th><th>Pseudo</th><th>Latitude</th><th>Longitude</th></tr>';
+                positions.last_10.forEach(pos => {
+                    html += '<tr>';
+                    html += '<td>' + pos.idposition + '</td>';
+                    html += '<td>' + pos.pseudo + '</td>';
+                    html += '<td>' + pos.latitude + '</td>';
+                    html += '<td>' + pos.longitude + '</td>';
+                    html += '</tr>';
+                });
+                html += '</table>';
+            }
+            html += '</div>';
+            
+            // Détails des questions
+            html += '<div class="card" style="margin-top: 20px;">';
+            html += '<h2>📚 Questions par Région</h2>';
+            if (questions.by_region.length > 0) {
+                html += '<table>';
+                html += '<tr><th>Région</th><th>Nombre de Questions</th></tr>';
+                questions.by_region.forEach(q => {
+                    html += '<tr>';
+                    html += '<td>' + q.region + '</td>';
+                    html += '<td>' + q.count + '</td>';
+                    html += '</tr>';
+                });
+                html += '</table>';
+            }
+            html += '</div>';
+            
+            // Détails des scores
+            html += '<div class="card" style="margin-top: 20px;">';
+            html += '<h2>🎯 Statistiques des Scores</h2>';
+            if (scores.statistics) {
+                html += '<p><strong>Moyenne:</strong> ' + (scores.statistics.avg_points || 'N/A') + '</p>';
+                html += '<p><strong>Maximum:</strong> ' + (scores.statistics.max_points || 'N/A') + '</p>';
+                html += '<p><strong>Minimum:</strong> ' + (scores.statistics.min_points || 'N/A') + '</p>';
+                html += '<p><strong>Précision Moyenne:</strong> ' + (scores.statistics.avg_accuracy || 'N/A') + '%</p>';
+            }
+            html += '</div>';
+            
+            document.getElementById('content').innerHTML = html;
+        }
+        
+        function createCard(title, value, label) {
+            return `
+                <div class="card">
+                    <h2>${title}</h2>
+                    <div class="card-value">${value}</div>
+                    <div class="card-label">${label}</div>
+                </div>
+            `;
+        }
+        
+        function displayError(error) {
+            document.getElementById('content').innerHTML = `
+                <div class="error">
+                    <strong>❌ Erreur:</strong> ${error}
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
+

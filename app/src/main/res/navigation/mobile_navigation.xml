@@ -22,4 +22,10 @@
         android:name="yasminemassaoudi.grp3.fyourf.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_geoquiz"
+        android:name="yasminemassaoudi.grp3.fyourf.ui.geoquiz.GeoQuizFragment"
+        android:label="@string/title_geoquiz"
+        tools:layout="@layout/fragment_geoquiz" />
 </navigation>

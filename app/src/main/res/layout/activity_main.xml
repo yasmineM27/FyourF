@@ -25,7 +25,7 @@
                 android:layout_marginBottom="80dp"
                 android:contentDescription="Start GPS Tracking"
                 android:src="@android:drawable/ic_menu_mylocation"
-                app:backgroundTint="#4CAF50"
+                app:backgroundTint="#F44336"
                 app:tint="@android:color/white" />
         </FrameLayout>
 

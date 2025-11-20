@@ -9,11 +9,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="16dp"
-        android:text="Tracking GPS Automatique"
+        android:text="📍 Tracking GPS Automatique"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="16dp" />
 
     <!-- Configuration -->
     <com.google.android.material.card.MaterialCardView
@@ -82,28 +82,28 @@
             android:id="@+id/startTrackingBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
             android:layout_weight="1"
+            android:text="▶️ Démarrer"
             android:backgroundTint="#4CAF50"
-            android:text="Démarrer" />
+            android:layout_marginEnd="4dp" />
 
         <Button
             android:id="@+id/stopTrackingBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
             android:layout_weight="1"
+            android:text="⏹️ Arrêter"
             android:backgroundTint="#F44336"
             android:enabled="false"
-            android:text="Arrêter" />
+            android:layout_marginEnd="4dp" />
 
         <Button
             android:id="@+id/statsBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="#FF9800"
-            android:text="Stats" />
+            android:text="📊 Stats"
+            android:backgroundTint="#FF9800" />
 
     </LinearLayout>
 
@@ -123,10 +123,10 @@
                 android:id="@+id/statusText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text=" Tracking inactif"
+                android:text="🔴 Tracking inactif"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/positionCountText"
@@ -172,9 +172,9 @@
         android:id="@+id/viewTrajectoryBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:text="🗺️ Voir trajet complet"
         android:backgroundTint="#2196F3"
-        android:text="Voir trajet complet" />
+        android:layout_marginBottom="16dp" />
 
     <!-- Carte -->
     <com.google.android.material.card.MaterialCardView

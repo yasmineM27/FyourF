@@ -32,6 +32,63 @@ public class LocationDatabase extends SQLiteOpenHelper {
                 COLUMN_LONGITUDE + " REAL, " +
                 COLUMN_TIMESTAMP + " LONG)";
         db.execSQL(createTable);
+
+        // Insert test data for GeoQuiz
+        insertTestData(db);
+    }
+
+    /**
+     * Insert test location data for GeoQuiz
+     */
+    private void insertTestData(SQLiteDatabase db) {
+        try {
+            // Test locations in Tunisia
+            ContentValues values1 = new ContentValues();
+            values1.put(COLUMN_PHONE, "+21612345678");
+            values1.put(COLUMN_LATITUDE, 36.8065);
+            values1.put(COLUMN_LONGITUDE, 10.1815);
+            values1.put(COLUMN_TIMESTAMP, System.currentTimeMillis());
+            db.insert(TABLE_NAME, null, values1);
+
+            ContentValues values2 = new ContentValues();
+            values2.put(COLUMN_PHONE, "+21612345678");
+            values2.put(COLUMN_LATITUDE, 36.8070);
+            values2.put(COLUMN_LONGITUDE, 10.1820);
+            values2.put(COLUMN_TIMESTAMP, System.currentTimeMillis() + 30000);
+            db.insert(TABLE_NAME, null, values2);
+
+            ContentValues values3 = new ContentValues();
+            values3.put(COLUMN_PHONE, "+21612345678");
+            values3.put(COLUMN_LATITUDE, 36.8075);
+            values3.put(COLUMN_LONGITUDE, 10.1825);
+            values3.put(COLUMN_TIMESTAMP, System.currentTimeMillis() + 60000);
+            db.insert(TABLE_NAME, null, values3);
+
+            ContentValues values4 = new ContentValues();
+            values4.put(COLUMN_PHONE, "+21612345678");
+            values4.put(COLUMN_LATITUDE, 36.8080);
+            values4.put(COLUMN_LONGITUDE, 10.1830);
+            values4.put(COLUMN_TIMESTAMP, System.currentTimeMillis() + 90000);
+            db.insert(TABLE_NAME, null, values4);
+
+            ContentValues values5 = new ContentValues();
+            values5.put(COLUMN_PHONE, "+21612345678");
+            values5.put(COLUMN_LATITUDE, 36.8085);
+            values5.put(COLUMN_LONGITUDE, 10.1835);
+            values5.put(COLUMN_TIMESTAMP, System.currentTimeMillis() + 120000);
+            db.insert(TABLE_NAME, null, values5);
+
+            ContentValues values6 = new ContentValues();
+            values6.put(COLUMN_PHONE, "+21612345678");
+            values6.put(COLUMN_LATITUDE, 35.7595);
+            values6.put(COLUMN_LONGITUDE, 10.5671);
+            values6.put(COLUMN_TIMESTAMP, System.currentTimeMillis() + 150000);
+            db.insert(TABLE_NAME, null, values6);
+
+            android.util.Log.d("LocationDatabase", "✓ Test data inserted successfully");
+        } catch (Exception e) {
+            android.util.Log.e("LocationDatabase", "Error inserting test data", e);
+        }
     }
 
     @Override

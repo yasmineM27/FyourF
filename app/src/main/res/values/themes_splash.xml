@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Splash Screen Theme -->
+    <style name="Theme.Splash" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/gradient_blue_to_cyan</item>
+        <item name="android:statusBarColor">@color/primary_blue</item>
+        <item name="android:navigationBarColor">@color/primary_blue</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+</resources>
+

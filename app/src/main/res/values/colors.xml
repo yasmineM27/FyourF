@@ -18,4 +18,13 @@
     <color name="gray_dark">#424242</color>
     <color name="text_primary">#1a1a1a</color>
     <color name="text_secondary">#666666</color>
+
+    <!-- Additional colors for Friends & Distance -->
+    <color name="green">#4CAF50</color>
+    <color name="yellow">#FFC107</color>
+    <color name="gray">#9E9E9E</color>
+    <color name="dark_blue">#0f5da7</color>
+    <color name="light_blue">#E3F2FD</color>
+    <color name="red">#F44336</color>
+    <color name="cyan">#00BCD4</color>
 </resources>
