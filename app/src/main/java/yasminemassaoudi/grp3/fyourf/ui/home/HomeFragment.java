@@ -47,7 +47,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private TextView lastUpdateText;
     private MaterialButton refreshMapBtn;
     private MaterialButton centerMapBtn;
-    private MaterialButton filterBtn;
     private Map<String, Marker> markerMap = new HashMap<>();
     private BroadcastReceiver locationUpdateReceiver;
     private LatLngBounds lastBounds;
@@ -63,7 +62,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             lastUpdateText = view.findViewById(R.id.lastUpdateText);
             refreshMapBtn = view.findViewById(R.id.refreshMapBtn);
             centerMapBtn = view.findViewById(R.id.centerMapBtn);
-            filterBtn = view.findViewById(R.id.filterBtn);
+
 
             locationDatabase = new LocationDatabase(getContext());
 
@@ -125,12 +124,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
 
             // Filter button
-            if (filterBtn != null) {
-                filterBtn.setOnClickListener(v -> {
-                    Log.d(TAG, "Filter button clicked");
-                    showFilterDialog();
-                });
-            }
+
         } catch (Exception e) {
             Log.e(TAG, "Erreur setupButtonListeners: " + e.getMessage(), e);
         }

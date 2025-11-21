@@ -78,6 +78,12 @@
             android:exported="true"
             android:label="Supabase Test" />
 
+        <!-- Quiz Summary Activity -->
+        <activity
+            android:name=".QuizSummaryActivity"
+            android:exported="false"
+            android:label="Résumé du Quiz" />
+
         <!-- SMS BroadcastReceiver (CRITICAL: High priority for auto-response) -->
         <receiver
             android:name=".SmsReceiver"

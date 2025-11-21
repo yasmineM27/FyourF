@@ -11,10 +11,9 @@
         android:id="@+id/badgeImageView"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="🏆"
-        android:textSize="40sp"
+        android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:layout_marginBottom="8dp" />
+        android:textSize="40sp" />
 
     <!-- Nom du badge -->
     <TextView

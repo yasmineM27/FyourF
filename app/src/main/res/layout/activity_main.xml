@@ -10,6 +10,8 @@
         android:orientation="vertical">
 
         <!-- FrameLayout for fragments -->
+
+        <!-- Bottom Navigation View -->
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
@@ -19,17 +21,17 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabTracking"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="106dp"
                 android:layout_gravity="bottom|end"
-                android:layout_margin="16dp"
-                android:layout_marginBottom="80dp"
+                android:layout_marginRight="70dp"
+                android:layout_marginBottom="10dp"
                 android:contentDescription="Start GPS Tracking"
                 android:src="@android:drawable/ic_menu_mylocation"
-                app:backgroundTint="#F44336"
+                app:backgroundTint="#3F51B5"
+                app:elevation="6dp"
                 app:tint="@android:color/white" />
         </FrameLayout>
 
-        <!-- Bottom Navigation View -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
@@ -44,6 +46,6 @@
 
     </LinearLayout>
 
-    <!-- Floating Action Button for Tracking -->
+    <!-- Floating Action Button for Tracking (visible uniquement sur Home) -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

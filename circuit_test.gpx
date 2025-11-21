@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="FyourF Test Circuit"
+     xmlns="http://www.topografix.com/GPX/1/1"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Circuit Test - TrackingActivity</name>
+    <desc>Circuit de test pour démontrer les nouvelles fonctionnalités: polylines colorées, détection de circuit, détection de pause</desc>
+    <author>
+      <name>FyourF</name>
+    </author>
+  </metadata>
+  <trk>
+    <name>Circuit Test Paris</name>
+    <desc>Trajet en boucle avec variations de vitesse et pause</desc>
+    <trkseg>
+      <!-- Point 1: DÉPART - Tour Eiffel -->
+      <trkpt lat="48.8584" lon="2.2945">
+        <ele>35</ele>
+        <time>2024-01-01T10:00:00Z</time>
+        <name>Départ</name>
+        <desc>Point de départ - Vitesse lente</desc>
+      </trkpt>
+      
+      <!-- Point 2: Déplacement lent vers le nord (Vert) -->
+      <trkpt lat="48.8590" lon="2.2950">
+        <ele>35</ele>
+        <time>2024-01-01T10:00:05Z</time>
+        <name>Point 2</name>
+        <desc>Vitesse ~5 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 3: Accélération - vitesse moyenne (Jaune) -->
+      <trkpt lat="48.8600" lon="2.2960">
+        <ele>36</ele>
+        <time>2024-01-01T10:00:10Z</time>
+        <name>Point 3</name>
+        <desc>Vitesse ~15 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 4: Vitesse moyenne (Jaune) -->
+      <trkpt lat="48.8615" lon="2.2975">
+        <ele>37</ele>
+        <time>2024-01-01T10:00:15Z</time>
+        <name>Point 4</name>
+        <desc>Vitesse ~25 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 5: Accélération - vitesse rapide (Orange) -->
+      <trkpt lat="48.8635" lon="2.2995">
+        <ele>38</ele>
+        <time>2024-01-01T10:00:20Z</time>
+        <name>Point 5</name>
+        <desc>Vitesse ~35 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 6: Vitesse rapide (Orange) -->
+      <trkpt lat="48.8660" lon="2.3020">
+        <ele>39</ele>
+        <time>2024-01-01T10:00:25Z</time>
+        <name>Point 6</name>
+        <desc>Vitesse ~45 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 7: Vitesse maximale (Rouge) -->
+      <trkpt lat="48.8690" lon="2.3050">
+        <ele>40</ele>
+        <time>2024-01-01T10:00:30Z</time>
+        <name>Point 7</name>
+        <desc>Vitesse ~55 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 8: Virage vers l'est - ralentissement (Orange) -->
+      <trkpt lat="48.8700" lon="2.3080">
+        <ele>40</ele>
+        <time>2024-01-01T10:00:35Z</time>
+        <name>Point 8</name>
+        <desc>Vitesse ~40 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 9: Continue vers l'est (Jaune) -->
+      <trkpt lat="48.8705" lon="2.3110">
+        <ele>41</ele>
+        <time>2024-01-01T10:00:40Z</time>
+        <name>Point 9</name>
+        <desc>Vitesse ~30 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 10: Ralentissement (Vert) -->
+      <trkpt lat="48.8708" lon="2.3130">
+        <ele>41</ele>
+        <time>2024-01-01T10:00:45Z</time>
+        <name>Point 10</name>
+        <desc>Vitesse ~20 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 11: PAUSE - Très lent (début pause) -->
+      <trkpt lat="48.8709" lon="2.3132">
+        <ele>41</ele>
+        <time>2024-01-01T10:00:50Z</time>
+        <name>Pause 1</name>
+        <desc>Vitesse ~0.5 km/h - Début pause</desc>
+      </trkpt>
+      
+      <!-- Point 12: PAUSE - Très lent -->
+      <trkpt lat="48.8709" lon="2.3133">
+        <ele>41</ele>
+        <time>2024-01-01T10:00:55Z</time>
+        <name>Pause 2</name>
+        <desc>Vitesse ~0.3 km/h - Pause</desc>
+      </trkpt>
+      
+      <!-- Point 13: PAUSE - Très lent (pause confirmée) -->
+      <trkpt lat="48.8710" lon="2.3134">
+        <ele>41</ele>
+        <time>2024-01-01T10:01:00Z</time>
+        <name>Pause 3</name>
+        <desc>Vitesse ~0.2 km/h - Pause confirmée</desc>
+      </trkpt>
+      
+      <!-- Point 14: REPRISE - Accélération (Jaune) -->
+      <trkpt lat="48.8715" lon="2.3145">
+        <ele>42</ele>
+        <time>2024-01-01T10:01:05Z</time>
+        <name>Reprise</name>
+        <desc>Vitesse ~18 km/h - Mouvement repris</desc>
+      </trkpt>
+      
+      <!-- Point 15: Virage vers le sud (Jaune) -->
+      <trkpt lat="48.8700" lon="2.3150">
+        <ele>42</ele>
+        <time>2024-01-01T10:01:10Z</time>
+        <name>Point 15</name>
+        <desc>Vitesse ~30 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 16: Retour vers le départ (Jaune) -->
+      <trkpt lat="48.8650" lon="2.3100">
+        <ele>40</ele>
+        <time>2024-01-01T10:01:15Z</time>
+        <name>Point 16</name>
+        <desc>Vitesse ~25 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 17: Continue vers le départ (Jaune) -->
+      <trkpt lat="48.8620" lon="2.3050">
+        <ele>39</ele>
+        <time>2024-01-01T10:01:20Z</time>
+        <name>Point 17</name>
+        <desc>Vitesse ~30 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 18: Approche du départ (Vert) -->
+      <trkpt lat="48.8600" lon="2.3000">
+        <ele>37</ele>
+        <time>2024-01-01T10:01:25Z</time>
+        <name>Point 18</name>
+        <desc>Vitesse ~20 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 19: Très proche du départ (Vert) -->
+      <trkpt lat="48.8590" lon="2.2970">
+        <ele>36</ele>
+        <time>2024-01-01T10:01:30Z</time>
+        <name>Point 19</name>
+        <desc>Vitesse ~15 km/h</desc>
+      </trkpt>
+      
+      <!-- Point 20: RETOUR AU DÉPART - Circuit fermé! (Vert) -->
+      <trkpt lat="48.8586" lon="2.2948">
+        <ele>35</ele>
+        <time>2024-01-01T10:01:35Z</time>
+        <name>Arrivée - Circuit Fermé!</name>
+        <desc>Vitesse ~10 km/h - Retour au point de départ</desc>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
+

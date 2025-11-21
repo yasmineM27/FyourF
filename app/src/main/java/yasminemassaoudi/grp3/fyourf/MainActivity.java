@@ -32,6 +32,7 @@ import yasminemassaoudi.grp3.fyourf.ui.geoquiz.BadgesFragment;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+    private FloatingActionButton fabTracking;
     private static final int PERMISSION_REQUEST_CODE = 100;
 
     @Override
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // Bouton FAB pour le tracking
-        FloatingActionButton fabTracking = findViewById(R.id.fabTracking);
+        fabTracking = findViewById(R.id.fabTracking);
         if (fabTracking != null) {
             fabTracking.setOnClickListener(v -> openTrackingActivity());
         }
@@ -61,21 +62,27 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.nav_home) {
                 android.util.Log.d("MainActivity", "Loading HomeFragment");
                 fragment = new HomeFragment();
+                showFab(); // Afficher le FAB uniquement sur Home
             } else if (item.getItemId() == R.id.nav_dashboard) {
                 android.util.Log.d("MainActivity", "Loading DashboardFragment");
                 fragment = new DashboardFragment();
+                hideFab();
             } else if (item.getItemId() == R.id.nav_history) {
                 android.util.Log.d("MainActivity", "Loading HistoryFragment");
                 fragment = new HistoryFragment();
+                hideFab();
             } else if (item.getItemId() == R.id.nav_notifications) {
                 android.util.Log.d("MainActivity", "Loading NotificationsFragment");
                 fragment = new NotificationsFragment();
+                hideFab();
             } else if (item.getItemId() == R.id.nav_settings) {
                 android.util.Log.d("MainActivity", "Loading SettingsFragment");
                 fragment = new SettingsFragment();
+                hideFab();
             } else if (item.getItemId() == R.id.nav_geoquiz) {
                 android.util.Log.d("MainActivity", "✓ Loading GeoQuizFragment");
                 fragment = new GeoQuizFragment();
+                hideFab();
             }
 
             if (fragment != null) {
@@ -192,5 +199,18 @@ public class MainActivity extends AppCompatActivity {
 
     public BottomNavigationView getBottomNavigationView() {
         return bottomNavigationView;
+    }
+
+    // Méthodes pour gérer la visibilité du FAB
+    private void showFab() {
+        if (fabTracking != null) {
+            fabTracking.show();
+        }
+    }
+
+    private void hideFab() {
+        if (fabTracking != null) {
+            fabTracking.hide();
+        }
     }
 }

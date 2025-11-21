@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructions Visuelles - TrackingActivity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .step {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .step h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .mockup {
+            background: #f8f9fa;
+            border: 3px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .phone-screen {
+            background: white;
+            border: 5px solid #333;
+            border-radius: 30px;
+            padding: 40px 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .map-area {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            height: 300px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .marker {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .marker.start {
+            background: #00FF00;
+            top: 200px;
+            left: 50px;
+        }
+        
+        .circle-detection {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 3px dashed rgba(0,255,0,0.5);
+            border-radius: 50%;
+            background: rgba(0,255,0,0.1);
+            top: 175px;
+            left: 25px;
+        }
+        
+        .polyline {
+            position: absolute;
+            height: 6px;
+            border-radius: 3px;
+        }
+        
+        .poly-green {
+            background: #00FF00;
+            width: 80px;
+            top: 210px;
+            left: 70px;
+            transform: rotate(30deg);
+        }
+        
+        .poly-yellow {
+            background: #FFFF00;
+            width: 90px;
+            top: 180px;
+            left: 130px;
+            transform: rotate(-20deg);
+        }
+        
+        .poly-orange {
+            background: #FF8800;
+            width: 100px;
+            top: 150px;
+            left: 200px;
+            transform: rotate(45deg);
+        }
+        
+        .poly-red {
+            background: #FF0000;
+            width: 80px;
+            top: 120px;
+            left: 270px;
+            transform: rotate(-30deg);
+        }
+        
+        .button {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .stats-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .before-icon {
+            color: #ff6b6b;
+            font-size: 1.2em;
+        }
+        
+        .after-icon {
+            color: #51cf66;
+            font-size: 1.2em;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .legend-color {
+            width: 30px;
+            height: 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 Instructions Visuelles - Comment Tester</h1>
+        
+        <!-- ÉTAPE 1 -->
+        <div class="step">
+            <h2><span class="step-number">1</span>Ouvrir l'Application</h2>
+            <p>L'application FyourF est déjà installée et lancée sur votre émulateur.</p>
+            <div class="highlight">
+                <strong>💡 Astuce:</strong> Si l'application n'est pas ouverte, cherchez l'icône "FyourF" dans le menu des applications de l'émulateur.
+            </div>
+        </div>
+        
+        <!-- ÉTAPE 2 -->
+        <div class="step">
+            <h2><span class="step-number">2</span>Naviguer vers TrackingActivity</h2>
+            <p>Dans l'application, trouvez et cliquez sur le bouton ou l'option pour accéder au tracking GPS.</p>
+            <div class="mockup">
+                <div class="phone-screen">
+                    <div style="text-align: center; padding: 20px;">
+                        <h3 style="color: #667eea;">Menu Principal</h3>
+                        <button class="button" style="width: 80%; margin: 10px 0;">🗺️ Tracking GPS</button>
+                        <button class="button" style="width: 80%; margin: 10px 0; opacity: 0.5;">📊 Statistiques</button>
+                        <button class="button" style="width: 80%; margin: 10px 0; opacity: 0.5;">👥 Amis</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ÉTAPE 3 -->
+        <div class="step">
+            <h2><span class="step-number">3</span>Démarrer le Tracking</h2>
+            <p>Remplissez les champs et cliquez sur "Démarrer Tracking"</p>
+            <div class="mockup">
+                <div class="phone-screen">
+                    <div style="padding: 10px;">
+                        <label style="display: block; margin: 10px 0;">
+                            <strong>Numéro de téléphone:</strong><br>
+                            <input type="text" value="+21612345678" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 5px; margin-top: 5px;">
+                        </label>
+                        <label style="display: block; margin: 10px 0;">
+                            <strong>Pseudo (optionnel):</strong><br>
+                            <input type="text" value="TestUser" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 5px; margin-top: 5px;">
+                        </label>
+                        <label style="display: block; margin: 10px 0;">
+                            <strong>Intervalle (secondes):</strong><br>
+                            <input type="text" value="10" style="width: 100%; padding: 10px; border: 2px solid #667eea; border-radius: 5px; margin-top: 5px;">
+                        </label>
+                        <button class="button" style="width: 100%; margin-top: 15px; background: #51cf66;">▶️ Démarrer Tracking</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ÉTAPE 4 -->
+        <div class="step">
+            <h2><span class="step-number">4</span>Lancer la Simulation GPS</h2>
+            <p>Double-cliquez sur le fichier <code>simulate_gps_circuit.bat</code> dans le dossier du projet.</p>
+            <div class="highlight">
+                <strong>📂 Emplacement:</strong> C:\Users\yasmi\AndroidStudioProjects\FyourF2\FyourF\simulate_gps_circuit.bat
+            </div>
+            <p style="margin-top: 15px;">Le script va automatiquement:</p>
+            <ul style="margin-left: 30px; margin-top: 10px;">
+                <li>✅ Envoyer 20 positions GPS à l'émulateur</li>
+                <li>✅ Varier les vitesses (lent → rapide → lent)</li>
+                <li>✅ Simuler une pause (3 points lents)</li>
+                <li>✅ Revenir au point de départ (circuit fermé)</li>
+            </ul>
+        </div>
+        
+        <!-- ÉTAPE 5 -->
+        <div class="step">
+            <h2><span class="step-number">5</span>Observer les Nouvelles Fonctionnalités</h2>
+            
+            <h3 style="color: #667eea; margin-top: 20px;">🎨 Polylines Colorées</h3>
+            <div class="mockup">
+                <div class="phone-screen">
+                    <div class="map-area">
+                        <div class="circle-detection"></div>
+                        <div class="marker start">🟢</div>
+                        <div class="polyline poly-green"></div>
+                        <div class="polyline poly-yellow"></div>
+                        <div class="polyline poly-orange"></div>
+                        <div class="polyline poly-red"></div>
+                        <div class="marker" style="background: #FF8800; top: 140px; left: 180px;">⏸️</div>
+                        <div class="marker" style="background: #00FFFF; top: 110px; left: 220px;">▶️</div>
+                        <div class="marker" style="background: #FF0000; top: 205px; left: 55px;">🔴</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #00FF00;"></div>
+                    <span>0-10 km/h (Lent)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FFFF00;"></div>
+                    <span>10-30 km/h (Moyen)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FF8800;"></div>
+                    <span>30-50 km/h (Rapide)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FF0000;"></div>
+                    <span>>50 km/h (Très rapide)</span>
+                </div>
+            </div>
+            
+            <h3 style="color: #667eea; margin-top: 30px;">📊 Statistiques Avancées</h3>
+            <p>Cliquez sur le bouton "Statistiques" pour voir:</p>
+            <div class="stats-display">
+📊 STATISTIQUES AVANCÉES DU TRAJET
+
+⏱️ Durée totale: 00:01:40
+⏱️ Durée active: 00:01:25
+⏸️ Temps de pause: 15 s
+📏 Distance parcourue: 2.45 km
+📐 Distance à vol d'oiseau: 0.05 km
+🚀 Vitesse moyenne: 25.3 km/h
+⚡ Vitesse maximale: 55.0 km/h
+🏃 Vitesse actuelle: 8.2 km/h
+📍 Nombre de points: 20
+🔄 Circuit: ✅ Circuit fermé détecté
+            </div>
+        </div>
+        
+        <!-- COMPARAISON -->
+        <div class="step">
+            <h2><span class="step-number">6</span>Comparaison AVANT vs APRÈS</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Fonctionnalité</th>
+                        <th>AVANT ❌</th>
+                        <th>APRÈS ✅</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Polylines</strong></td>
+                        <td><span class="before-icon">❌</span> Ligne bleue uniforme</td>
+                        <td><span class="after-icon">✅</span> Segments colorés par vitesse</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marqueur départ</strong></td>
+                        <td><span class="before-icon">❌</span> Marqueur bleu simple</td>
+                        <td><span class="after-icon">✅</span> Marqueur vert + cercle 50m</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Détection pause</strong></td>
+                        <td><span class="before-icon">❌</span> Non détecté</td>
+                        <td><span class="after-icon">✅</span> Marqueur orange + temps comptabilisé</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Détection circuit</strong></td>
+                        <td><span class="before-icon">❌</span> Non détecté</td>
+                        <td><span class="after-icon">✅</span> Marqueur rouge + ligne pointillée</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Statistiques</strong></td>
+                        <td><span class="before-icon">❌</span> 4 métriques basiques</td>
+                        <td><span class="after-icon">✅</span> 11+ métriques avancées</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vitesse</strong></td>
+                        <td><span class="before-icon">❌</span> Moyenne seulement</td>
+                        <td><span class="after-icon">✅</span> Moyenne + Max + Actuelle</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Export données</strong></td>
+                        <td><span class="before-icon">❌</span> Non disponible</td>
+                        <td><span class="after-icon">✅</span> Export complet</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td><span class="before-icon">❌</span> UI peut bloquer</td>
+                        <td><span class="after-icon">✅</span> Multi-threading, UI fluide</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- INTERACTIONS -->
+        <div class="step">
+            <h2><span class="step-number">7</span>Interactions à Tester</h2>
+            
+            <h3 style="color: #667eea;">🗺️ Sur la Carte</h3>
+            <ul style="margin-left: 30px; margin-top: 10px; line-height: 2;">
+                <li><strong>Appui long</strong> sur la carte → Affiche la légende des couleurs</li>
+                <li><strong>Clic</strong> sur un segment → Affiche la vitesse du segment</li>
+                <li><strong>Bouton "Voir Trajet"</strong> → Zoom animé sur tout le trajet</li>
+                <li><strong>Appui long "Voir Trajet"</strong> → Options d'export</li>
+            </ul>
+            
+            <h3 style="color: #667eea; margin-top: 20px;">🎮 Boutons</h3>
+            <ul style="margin-left: 30px; margin-top: 10px; line-height: 2;">
+                <li><strong>"Statistiques"</strong> → Dialog avec toutes les métriques</li>
+                <li><strong>"Démarrer Tracking"</strong> → Commence l'enregistrement</li>
+                <li><strong>"Arrêter Tracking"</strong> → Arrête et sauvegarde</li>
+            </ul>
+        </div>
+        
+        <!-- RÉSUMÉ -->
+        <div class="step" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 style="color: white;">🎉 Résumé</h2>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                Vous avez maintenant une application de tracking GPS <strong>complètement transformée</strong> avec:
+            </p>
+            <ul style="margin-left: 30px; margin-top: 15px; font-size: 1.1em; line-height: 2;">
+                <li>✅ Visuels riches et colorés</li>
+                <li>✅ Détections intelligentes (circuit, pause)</li>
+                <li>✅ Statistiques avancées (11+ métriques)</li>
+                <li>✅ Performance optimale (multi-threading)</li>
+                <li>✅ Export de données complet</li>
+                <li>✅ Interactions enrichies</li>
+            </ul>
+            <p style="margin-top: 20px; font-size: 1.3em; text-align: center;">
+                <strong>Profitez de votre application améliorée! 🚀</strong>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

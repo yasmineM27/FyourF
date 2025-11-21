@@ -19,12 +19,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="🎉 Quiz Terminé!"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:layout_marginBottom="16dp" />
+            android:text="Quiz Terminé!"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/finalScoreTextView"
@@ -126,11 +126,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="🏆 Badges Déverrouillés"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:layout_marginBottom="12dp"
+        android:text="Badges Déverrouillés"
         android:textColor="@color/dark_blue"
-        android:layout_marginBottom="12dp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/unlockedBadgesContainer"

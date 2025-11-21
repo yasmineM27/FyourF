@@ -20,7 +20,6 @@ public class SplashActivity extends AppCompatActivity {
     private static final int SPLASH_DURATION = 3000; // 3 secondes
     private ImageView logoImageView;
     private TextView appNameTextView;
-    private TextView versionTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,6 @@ public class SplashActivity extends AppCompatActivity {
         // Initialiser les vues
         logoImageView = findViewById(R.id.splash_logo);
         appNameTextView = findViewById(R.id.splash_app_name);
-        versionTextView = findViewById(R.id.splash_version);
 
         // Charger les animations
         loadAnimations();
@@ -59,7 +57,6 @@ public class SplashActivity extends AppCompatActivity {
             // Animation de la version (slide up)
             Animation versionAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
             versionAnimation.setStartOffset(1000);
-            versionTextView.startAnimation(versionAnimation);
 
         } catch (Exception e) {
             e.printStackTrace();

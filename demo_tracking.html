@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Démo TrackingActivity - Avant vs Après</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .version {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .version h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .before h2 {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .after h2 {
+            background: #51cf66;
+            color: white;
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 400px;
+            background: #e9ecef;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #dee2e6;
+        }
+        
+        .stats {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .stats-line {
+            padding: 5px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .stats-line:last-child {
+            border-bottom: none;
+        }
+        
+        .controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .start-btn {
+            background: #51cf66;
+            color: white;
+        }
+        
+        .start-btn:hover {
+            background: #40c057;
+            transform: scale(1.05);
+        }
+        
+        .stop-btn {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .stop-btn:hover {
+            background: #fa5252;
+            transform: scale(1.05);
+        }
+        
+        /* Simulation de carte */
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .marker {
+            transition: all 0.3s;
+        }
+        
+        .marker:hover {
+            transform: scale(1.2);
+        }
+        
+        .legend {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-size: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px 0;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        .info-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+        }
+        
+        .feature-item.new {
+            background: #d3f9d8;
+            border: 1px solid #51cf66;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .tracking-active {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Démo TrackingActivity - Avant vs Après</h1>
+        
+        <div class="comparison">
+            <!-- AVANT -->
+            <div class="version before">
+                <h2>❌ AVANT - Version Basique</h2>
+                
+                <div class="map-container" id="map-before">
+                    <svg viewBox="0 0 600 400">
+                        <!-- Grille de fond -->
+                        <defs>
+                            <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#ddd" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect width="600" height="400" fill="url(#grid)"/>
+                        
+                        <!-- Trajet simple - UNE SEULE LIGNE BLEUE -->
+                        <polyline id="path-before" points="" 
+                                  fill="none" stroke="#0095F6" stroke-width="4"/>
+                        
+                        <!-- Marqueurs simples -->
+                        <g id="markers-before"></g>
+                    </svg>
+                </div>
+                
+                <div class="stats">
+                    <div class="stats-line">⏱️ Durée: <span id="duration-before">00:00:00</span></div>
+                    <div class="stats-line">📏 Distance: <span id="distance-before">0.00</span> km</div>
+                    <div class="stats-line">🚀 Vitesse moyenne: <span id="speed-before">0.0</span> km/h</div>
+                    <div class="stats-line">📍 Points: <span id="points-before">0</span></div>
+                </div>
+                
+                <div class="controls">
+                    <button class="start-btn" onclick="startBefore()">▶️ Démarrer</button>
+                    <button class="stop-btn" onclick="stopBefore()">⏹️ Arrêter</button>
+                </div>
+            </div>
+            
+            <!-- APRÈS -->
+            <div class="version after">
+                <h2>✅ APRÈS - Version Améliorée</h2>
+                
+                <div class="map-container" id="map-after">
+                    <svg viewBox="0 0 600 400">
+                        <rect width="600" height="400" fill="url(#grid)"/>
+                        
+                        <!-- Cercle de détection de circuit -->
+                        <circle id="circuit-circle" cx="100" cy="300" r="50" 
+                                fill="rgba(0,255,0,0.1)" stroke="rgba(0,255,0,0.5)" 
+                                stroke-width="2" stroke-dasharray="5,5" style="display:none"/>
+                        
+                        <!-- Segments colorés par vitesse -->
+                        <g id="path-after"></g>
+                        
+                        <!-- Marqueurs variés -->
+                        <g id="markers-after"></g>
+                    </svg>
+                    
+                    <!-- Légende des couleurs -->
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #00FF00;"></div>
+                            <span>0-10 km/h</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #FFFF00;"></div>
+                            <span>10-30 km/h</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #FF8800;"></div>
+                            <span>30-50 km/h</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #FF0000;"></div>
+                            <span>>50 km/h</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stats-line">⏱️ Durée totale: <span id="duration-after">00:00:00</span></div>
+                    <div class="stats-line">⏱️ Durée active: <span id="active-duration">00:00:00</span></div>
+                    <div class="stats-line">⏸️ Temps pause: <span id="pause-time">0</span> s</div>
+                    <div class="stats-line">📏 Distance: <span id="distance-after">0.00</span> km | 📐 Vol d'oiseau: <span id="straight-distance">0.00</span> km</div>
+                    <div class="stats-line">🚀 Moy: <span id="avg-speed">0.0</span> | ⚡ Max: <span id="max-speed">0.0</span> | 🏃 Act: <span id="current-speed">0.0</span> km/h</div>
+                    <div class="stats-line">📍 Points: <span id="points-after">0</span></div>
+                    <div class="stats-line">🔄 Circuit: <span id="circuit-status">❌ Ouvert</span></div>
+                </div>
+                
+                <div class="controls">
+                    <button class="start-btn" onclick="startAfter()">▶️ Démarrer</button>
+                    <button class="stop-btn" onclick="stopAfter()">⏹️ Arrêter</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Info Box -->
+        <div class="info-box">
+            <h3>🎯 Nouvelles Fonctionnalités Ajoutées</h3>
+            <div class="features-list">
+                <div class="feature-item new">✅ Polylines colorées par vitesse</div>
+                <div class="feature-item new">✅ Détection de circuit fermé</div>
+                <div class="feature-item new">✅ Détection automatique de pause</div>
+                <div class="feature-item new">✅ Statistiques avancées</div>
+                <div class="feature-item new">✅ Vitesse max et actuelle</div>
+                <div class="feature-item new">✅ Distance à vol d'oiseau</div>
+                <div class="feature-item new">✅ Marqueurs variés (pause, reprise)</div>
+                <div class="feature-item new">✅ Multi-threading (performance)</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données de simulation - trajet en boucle avec variations de vitesse
+        const simulatedPath = [
+            {x: 100, y: 300, speed: 5},   // Départ - lent
+            {x: 150, y: 280, speed: 12},  // Accélération
+            {x: 200, y: 250, speed: 25},  // Vitesse moyenne
+            {x: 250, y: 220, speed: 35},  // Rapide
+            {x: 300, y: 200, speed: 45},  // Très rapide
+            {x: 350, y: 190, speed: 55},  // Maximum
+            {x: 400, y: 200, speed: 40},  // Ralentissement
+            {x: 450, y: 220, speed: 28},  // Moyen
+            {x: 480, y: 250, speed: 15},  // Lent
+            {x: 490, y: 280, speed: 2},   // PAUSE
+            {x: 490, y: 285, speed: 0.5}, // PAUSE
+            {x: 490, y: 290, speed: 0.8}, // PAUSE
+            {x: 470, y: 300, speed: 18},  // Reprise
+            {x: 430, y: 310, speed: 30},  // Accélération
+            {x: 380, y: 320, speed: 38},  // Rapide
+            {x: 320, y: 330, speed: 42},  // Très rapide
+            {x: 260, y: 330, speed: 35},  // Ralentissement
+            {x: 200, y: 320, speed: 22},  // Moyen
+            {x: 150, y: 310, speed: 14},  // Lent
+            {x: 110, y: 305, speed: 8},   // Très lent - proche du départ
+        ];
+        
+        let beforeInterval, afterInterval;
+        let beforeIndex = 0, afterIndex = 0;
+        let beforeStartTime, afterStartTime;
+        let beforePauseTime = 0, afterPauseTime = 0;
+        let maxSpeed = 0;
+        
+        function getColorForSpeed(speed) {
+            if (speed < 10) return '#00FF00';      // Vert
+            else if (speed < 30) return '#FFFF00'; // Jaune
+            else if (speed < 50) return '#FF8800'; // Orange
+            else return '#FF0000';                  // Rouge
+        }
+        
+        function calculateDistance(p1, p2) {
+            // Simulation: 1 pixel = ~10 mètres
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            return Math.sqrt(dx*dx + dy*dy) * 0.01; // km
+        }
+        
+        // AVANT - Version simple
+        function startBefore() {
+            beforeIndex = 0;
+            beforeStartTime = Date.now();
+            document.getElementById('path-before').setAttribute('points', '');
+            document.getElementById('markers-before').innerHTML = '';
+            
+            beforeInterval = setInterval(() => {
+                if (beforeIndex >= simulatedPath.length) {
+                    stopBefore();
+                    return;
+                }
+                
+                const point = simulatedPath[beforeIndex];
+                
+                // Ajouter au polyline (UNE SEULE LIGNE BLEUE)
+                const pathEl = document.getElementById('path-before');
+                const currentPoints = pathEl.getAttribute('points');
+                pathEl.setAttribute('points', currentPoints + ` ${point.x},${point.y}`);
+                
+                // Marqueur simple bleu
+                const markersEl = document.getElementById('markers-before');
+                const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                marker.setAttribute('cx', point.x);
+                marker.setAttribute('cy', point.y);
+                marker.setAttribute('r', beforeIndex === 0 ? 8 : 4);
+                marker.setAttribute('fill', beforeIndex === 0 ? '#00FF00' : '#0095F6');
+                marker.setAttribute('class', 'marker');
+                markersEl.appendChild(marker);
+                
+                // Stats basiques
+                let totalDist = 0;
+                for (let i = 1; i <= beforeIndex; i++) {
+                    totalDist += calculateDistance(simulatedPath[i-1], simulatedPath[i]);
+                }
+                
+                const elapsed = (Date.now() - beforeStartTime) / 1000;
+                const avgSpeed = totalDist > 0 ? (totalDist / (elapsed / 3600)) : 0;
+                
+                document.getElementById('distance-before').textContent = totalDist.toFixed(2);
+                document.getElementById('speed-before').textContent = avgSpeed.toFixed(1);
+                document.getElementById('points-before').textContent = beforeIndex + 1;
+                
+                const hours = Math.floor(elapsed / 3600);
+                const minutes = Math.floor((elapsed % 3600) / 60);
+                const seconds = Math.floor(elapsed % 60);
+                document.getElementById('duration-before').textContent = 
+                    `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+                
+                beforeIndex++;
+            }, 500);
+        }
+        
+        function stopBefore() {
+            clearInterval(beforeInterval);
+        }
+        
+        // APRÈS - Version améliorée
+        function startAfter() {
+            afterIndex = 0;
+            afterStartTime = Date.now();
+            afterPauseTime = 0;
+            maxSpeed = 0;
+            document.getElementById('path-after').innerHTML = '';
+            document.getElementById('markers-after').innerHTML = '';
+            document.getElementById('circuit-circle').style.display = 'block';
+            
+            afterInterval = setInterval(() => {
+                if (afterIndex >= simulatedPath.length) {
+                    stopAfter();
+                    return;
+                }
+                
+                const point = simulatedPath[afterIndex];
+                const pathEl = document.getElementById('path-after');
+                const markersEl = document.getElementById('markers-after');
+                
+                // SEGMENTS COLORÉS PAR VITESSE
+                if (afterIndex > 0) {
+                    const prevPoint = simulatedPath[afterIndex - 1];
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', prevPoint.x);
+                    line.setAttribute('y1', prevPoint.y);
+                    line.setAttribute('x2', point.x);
+                    line.setAttribute('y2', point.y);
+                    line.setAttribute('stroke', getColorForSpeed(point.speed));
+                    line.setAttribute('stroke-width', '6');
+                    line.setAttribute('stroke-linecap', 'round');
+                    pathEl.appendChild(line);
+                }
+                
+                // MARQUEURS VARIÉS
+                if (afterIndex === 0) {
+                    // Marqueur départ vert
+                    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    marker.setAttribute('cx', point.x);
+                    marker.setAttribute('cy', point.y);
+                    marker.setAttribute('r', 10);
+                    marker.setAttribute('fill', '#00FF00');
+                    marker.setAttribute('stroke', 'white');
+                    marker.setAttribute('stroke-width', '2');
+                    markersEl.appendChild(marker);
+                } else if (afterIndex % 5 === 0) {
+                    // Waypoint tous les 5 points
+                    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    marker.setAttribute('cx', point.x);
+                    marker.setAttribute('cy', point.y);
+                    marker.setAttribute('r', 5);
+                    marker.setAttribute('fill', '#0095F6');
+                    marker.setAttribute('fill-opacity', '0.6');
+                    markersEl.appendChild(marker);
+                }
+                
+                // Détection de PAUSE
+                if (point.speed < 1 && afterIndex > 0 && simulatedPath[afterIndex-1].speed < 1) {
+                    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    marker.setAttribute('x', point.x);
+                    marker.setAttribute('y', point.y - 10);
+                    marker.setAttribute('fill', '#FF8800');
+                    marker.setAttribute('font-size', '20');
+                    marker.textContent = '⏸️';
+                    markersEl.appendChild(marker);
+                }
+                
+                // Détection de CIRCUIT FERMÉ
+                const startPoint = simulatedPath[0];
+                const dist = Math.sqrt(Math.pow(point.x - startPoint.x, 2) + Math.pow(point.y - startPoint.y, 2));
+                if (dist < 50 && afterIndex > 10) {
+                    document.getElementById('circuit-status').innerHTML = '✅ <strong style="color: green;">Circuit Fermé!</strong>';
+                    document.getElementById('circuit-circle').setAttribute('stroke', 'rgba(255,0,0,0.8)');
+                    
+                    // Ligne pointillée vers le départ
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', point.x);
+                    line.setAttribute('y1', point.y);
+                    line.setAttribute('x2', startPoint.x);
+                    line.setAttribute('y2', startPoint.y);
+                    line.setAttribute('stroke', '#00FF00');
+                    line.setAttribute('stroke-width', '3');
+                    line.setAttribute('stroke-dasharray', '10,5');
+                    pathEl.appendChild(line);
+                    
+                    // Marqueur circuit fermé
+                    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    marker.setAttribute('x', point.x);
+                    marker.setAttribute('y', point.y - 15);
+                    marker.setAttribute('fill', '#FF0000');
+                    marker.setAttribute('font-size', '24');
+                    marker.textContent = '🔴';
+                    markersEl.appendChild(marker);
+                }
+                
+                // STATISTIQUES AVANCÉES
+                let totalDist = 0;
+                for (let i = 1; i <= afterIndex; i++) {
+                    totalDist += calculateDistance(simulatedPath[i-1], simulatedPath[i]);
+                }
+                
+                // Distance à vol d'oiseau
+                const straightDist = calculateDistance(simulatedPath[0], point);
+                
+                const elapsed = (Date.now() - afterStartTime) / 1000;
+                const avgSpeed = totalDist > 0 ? (totalDist / (elapsed / 3600)) : 0;
+                
+                if (point.speed > maxSpeed) maxSpeed = point.speed;
+                
+                // Calcul temps de pause
+                if (point.speed < 1) {
+                    afterPauseTime += 0.5;
+                }
+                const activeTime = elapsed - afterPauseTime;
+                
+                document.getElementById('distance-after').textContent = totalDist.toFixed(2);
+                document.getElementById('straight-distance').textContent = straightDist.toFixed(2);
+                document.getElementById('avg-speed').textContent = avgSpeed.toFixed(1);
+                document.getElementById('max-speed').textContent = maxSpeed.toFixed(1);
+                document.getElementById('current-speed').textContent = point.speed.toFixed(1);
+                document.getElementById('points-after').textContent = afterIndex + 1;
+                document.getElementById('pause-time').textContent = Math.floor(afterPauseTime);
+                
+                const hours = Math.floor(elapsed / 3600);
+                const minutes = Math.floor((elapsed % 3600) / 60);
+                const seconds = Math.floor(elapsed % 60);
+                document.getElementById('duration-after').textContent = 
+                    `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+                
+                const activeHours = Math.floor(activeTime / 3600);
+                const activeMinutes = Math.floor((activeTime % 3600) / 60);
+                const activeSeconds = Math.floor(activeTime % 60);
+                document.getElementById('active-duration').textContent = 
+                    `${String(activeHours).padStart(2,'0')}:${String(activeMinutes).padStart(2,'0')}:${String(activeSeconds).padStart(2,'0')}`;
+                
+                afterIndex++;
+            }, 500);
+        }
+        
+        function stopAfter() {
+            clearInterval(afterInterval);
+        }
+    </script>
+</body>
+</html>
+

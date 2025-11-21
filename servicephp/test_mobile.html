@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test FyourF Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+        }
+        
+        .test-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .test-section h2::before {
+            content: "🔍";
+            margin-right: 10px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .result.success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .result.error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .status.success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .status.error {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .status.loading {
+            background: #ffc107;
+            color: black;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box strong {
+            color: #2196F3;
+        }
+        
+        .position-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .position-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .position-card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ FyourF Database Test</h1>
+            <p>Test de connexion à la base de données MySQL</p>
+        </div>
+        
+        <div class="content">
+            <div class="info-box">
+                <strong>📱 Appareil:</strong> <span id="deviceInfo">Chargement...</span><br>
+                <strong>🌐 Serveur:</strong> http://192.168.1.17/servicephp/
+            </div>
+            
+            <!-- Test 1: Get All Positions -->
+            <div class="test-section">
+                <h2>Récupérer toutes les positions</h2>
+                <button class="btn" onclick="testGetAll()">🔄 Tester GET ALL</button>
+                <div id="result-getall"></div>
+            </div>
+            
+            <!-- Test 2: Add Position -->
+            <div class="test-section">
+                <h2>Ajouter une position de test</h2>
+                <button class="btn" onclick="testAddPosition()">➕ Ajouter Position Test</button>
+                <div id="result-add"></div>
+            </div>
+            
+            <!-- Test 3: Connection Test -->
+            <div class="test-section">
+                <h2>Test de connectivité</h2>
+                <button class="btn" onclick="testConnection()">🔌 Tester Connexion</button>
+                <div id="result-connection"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Afficher les infos de l'appareil
+        document.getElementById('deviceInfo').textContent = navigator.userAgent;
+        
+        const SERVER_URL = 'http://192.168.1.17/servicephp';
+        
+        // Test 1: Get All Positions
+        async function testGetAll() {
+            const resultDiv = document.getElementById('result-getall');
+            resultDiv.innerHTML = '<div class="loading-spinner"></div>';
+            
+            try {
+                const response = await fetch(`${SERVER_URL}/get_all.php`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    let html = `<div class="result success">`;
+                    html += `<span class="status success">✅ SUCCÈS</span>`;
+                    html += `<p><strong>Nombre de positions:</strong> ${data.count}</p>`;
+                    
+                    if (data.data && data.data.length > 0) {
+                        html += `<h3 style="margin-top: 20px; color: #667eea;">📍 Positions:</h3>`;
+                        data.data.forEach((pos, index) => {
+                            html += `
+                                <div class="position-card">
+                                    <h3>Position #${index + 1}</h3>
+                                    <p><strong>Numéro:</strong> ${pos.numero}</p>
+                                    <p><strong>Pseudo:</strong> ${pos.pseudo || 'N/A'}</p>
+                                    <p><strong>Latitude:</strong> ${pos.latitude}</p>
+                                    <p><strong>Longitude:</strong> ${pos.longitude}</p>
+                                    <p><strong>Timestamp:</strong> ${new Date(pos.timestamp * 1000).toLocaleString()}</p>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    html += `<h3 style="margin-top: 20px; color: #667eea;">📄 JSON Brut:</h3>`;
+                    html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                    html += `</div>`;
+                    
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <span class="status error">❌ ERREUR</span>
+                            <p>${data.message || 'Erreur inconnue'}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <span class="status error">❌ ERREUR RÉSEAU</span>
+                        <p><strong>Message:</strong> ${error.message}</p>
+                        <p><strong>Vérifiez:</strong></p>
+                        <ul>
+                            <li>Votre téléphone est sur le même WiFi que le PC</li>
+                            <li>WampServer est démarré</li>
+                            <li>L'IP 192.168.1.17 est correcte</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+        
+        // Test 2: Add Position
+        async function testAddPosition() {
+            const resultDiv = document.getElementById('result-add');
+            resultDiv.innerHTML = '<div class="loading-spinner"></div>';
+            
+            const testData = {
+                numero: '+21699999999',
+                latitude: 36.8065 + (Math.random() * 0.01),
+                longitude: 10.1815 + (Math.random() * 0.01),
+                pseudo: 'Test Mobile ' + new Date().getTime(),
+                timestamp: Math.floor(Date.now() / 1000)
+            };
+            
+            try {
+                const formData = new URLSearchParams();
+                Object.keys(testData).forEach(key => {
+                    formData.append(key, testData[key]);
+                });
+                
+                const response = await fetch(`${SERVER_URL}/add_position.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <span class="status success">✅ SUCCÈS</span>
+                            <p><strong>Message:</strong> ${data.message}</p>
+                            <h3 style="margin-top: 15px; color: #667eea;">📤 Données envoyées:</h3>
+                            <pre>${JSON.stringify(testData, null, 2)}</pre>
+                            <h3 style="margin-top: 15px; color: #667eea;">📥 Réponse serveur:</h3>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <span class="status error">❌ ERREUR</span>
+                            <p>${data.message || 'Erreur inconnue'}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <span class="status error">❌ ERREUR RÉSEAU</span>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Test 3: Connection Test
+        async function testConnection() {
+            const resultDiv = document.getElementById('result-connection');
+            resultDiv.innerHTML = '<div class="loading-spinner"></div>';
+            
+            const tests = [
+                { name: 'Ping Serveur', url: `${SERVER_URL}/get_all.php` },
+                { name: 'Test Config', url: `${SERVER_URL}/config.php` },
+            ];
+            
+            let html = '<div class="result">';
+            
+            for (const test of tests) {
+                try {
+                    const startTime = Date.now();
+                    const response = await fetch(test.url);
+                    const endTime = Date.now();
+                    const duration = endTime - startTime;
+                    
+                    if (response.ok) {
+                        html += `<p>✅ <strong>${test.name}:</strong> OK (${duration}ms)</p>`;
+                    } else {
+                        html += `<p>⚠️ <strong>${test.name}:</strong> HTTP ${response.status}</p>`;
+                    }
+                } catch (error) {
+                    html += `<p>❌ <strong>${test.name}:</strong> ${error.message}</p>`;
+                }
+            }
+            
+            html += '</div>';
+            resultDiv.innerHTML = html;
+        }
+        
+        // Auto-test au chargement
+        window.addEventListener('load', () => {
+            console.log('Page chargée, prêt pour les tests');
+        });
+    </script>
+</body>
+</html>
+

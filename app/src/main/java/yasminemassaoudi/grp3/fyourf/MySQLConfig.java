@@ -21,7 +21,7 @@ public class MySQLConfig {
      * Adresse IP de votre serveur PHP
      * IMPORTANT: Remplacer par votre IPv4
      */
-    public static final String MYSQL_SERVER_IP = "192.168.178.115";
+    public static final String MYSQL_SERVER_IP = "192.168.1.17";
     
     /**
      * Port du serveur (80 par défaut pour Apache)
@@ -103,7 +103,7 @@ public class MySQLConfig {
         
         // Vérifier que l'IP a un format valide
         if (!MYSQL_SERVER_IP.matches("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$")) {
-            android.util.Log.e("MySQLConfig", "❌ Format d'IP invalide: " + MYSQL_SERVER_IP);
+            android.util.Log.e("MySQLConfig", " Format d'IP invalide: " + MYSQL_SERVER_IP);
             return false;
         }
         

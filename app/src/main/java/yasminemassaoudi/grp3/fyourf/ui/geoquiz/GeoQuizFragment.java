@@ -1,5 +1,6 @@
 package yasminemassaoudi.grp3.fyourf.ui.geoquiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import yasminemassaoudi.grp3.fyourf.GeoQuizManager;
 import yasminemassaoudi.grp3.fyourf.GeoQuizQuestion;
 import yasminemassaoudi.grp3.fyourf.LocationDatabase;
 import yasminemassaoudi.grp3.fyourf.Position;
+import yasminemassaoudi.grp3.fyourf.QuizSummaryActivity;
 import yasminemassaoudi.grp3.fyourf.R;
 
 import java.util.ArrayList;
@@ -293,7 +295,7 @@ public class GeoQuizFragment extends Fragment {
                 animateCorrectAnswer(selectedRadioButton);
                 animateScoreUpdate();
             } else {
-                Toast.makeText(requireContext(), "❌ Incorrect! La réponse est: " + question.getCorrectAnswer(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Incorrect! La réponse est: " + question.getCorrectAnswer(), Toast.LENGTH_SHORT).show();
                 selectedRadioButton.setTextColor(getResources().getColor(R.color.red));
                 animateIncorrectAnswer(selectedRadioButton);
             }
@@ -388,7 +390,7 @@ public class GeoQuizFragment extends Fragment {
             // Draw coordinates
             paint.setTextSize(16);
             paint.setColor(android.graphics.Color.parseColor("#666666"));
-            canvas.drawText("📍 Localisation", width / 2, height / 2 + 60, paint);
+            canvas.drawText(" Localisation", width / 2, height / 2 + 60, paint);
 
             return bitmap;
         } catch (Exception e) {
@@ -568,7 +570,7 @@ public class GeoQuizFragment extends Fragment {
     private void useHint() {
         try {
             if (hintsRemaining <= 0) {
-                Toast.makeText(requireContext(), "❌ Pas de hints restants!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), " Pas de hints restants!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -588,7 +590,7 @@ public class GeoQuizFragment extends Fragment {
                 if (!option.equals(correctAnswer)) {
                     radioButton.setEnabled(false);
                     radioButton.setAlpha(0.5f);
-                    radioButton.setText(option + " ❌");
+                    radioButton.setText(option + " ");
 
                     hintsRemaining--;
                     if (hintButton != null) {
@@ -622,21 +624,16 @@ public class GeoQuizFragment extends Fragment {
 
             quizManager.endSession();
 
-            // Afficher le résumé
-            String summary = String.format(
-                    "Quiz Terminé!\n\n" +
-                    "Score: %d points\n" +
-                    "Correctes: %d/%d\n" +
-                    "Précision: %.1f%%\n" +
-                    "Meilleur Streak: %d",
-                    quizManager.getCurrentScore(),
-                    quizManager.getCorrectAnswers(),
-                    quizManager.getTotalQuestions(),
-                    quizManager.getAccuracy(),
-                    quizManager.getMaxStreak()
-            );
+            // Lancer l'Activity de résumé du quiz
+            Intent intent = new Intent(requireContext(), QuizSummaryActivity.class);
+            intent.putExtra("FINAL_SCORE", quizManager.getCurrentScore());
+            intent.putExtra("CORRECT_ANSWERS", quizManager.getCorrectAnswers());
+            intent.putExtra("TOTAL_QUESTIONS", quizManager.getTotalQuestions());
+            intent.putExtra("ACCURACY", quizManager.getAccuracy());
+            intent.putExtra("MAX_STREAK", quizManager.getMaxStreak());
+            startActivity(intent);
 
-            Toast.makeText(requireContext(), summary, Toast.LENGTH_LONG).show();
+            android.util.Log.d(TAG, "Quiz terminé - Lancement de QuizSummaryActivity");
         } catch (Exception e) {
             android.util.Log.e(TAG, "Error ending quiz", e);
             Toast.makeText(requireContext(), "Erreur: " + e.getMessage(), Toast.LENGTH_SHORT).show();
