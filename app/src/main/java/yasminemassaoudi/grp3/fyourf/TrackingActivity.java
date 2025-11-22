@@ -1003,20 +1003,20 @@ public class TrackingActivity extends AppCompatActivity implements OnMapReadyCal
             long activeHrs = (activeTime / (1000 * 60 * 60));
 
             String stats = String.format(Locale.getDefault(),
-                    "📊 STATISTIQUES AVANCÉES DU TRAJET\n\n" +
-                    "⏱️ Durée totale: %02d:%02d:%02d\n" +
-                    "⏱️ Durée active: %02d:%02d:%02d\n" +
-                    "⏸️ Temps de pause: %d s\n" +
-                    "📏 Distance parcourue: %.2f km\n" +
-                    "📐 Distance à vol d'oiseau: %.2f km\n" +
-                    "🚀 Vitesse moyenne: %.2f km/h\n" +
-                    "⚡ Vitesse maximale: %.2f km/h\n" +
-                    "🐌 Vitesse actuelle: %.2f km/h\n" +
-                    "📍 Nombre de points: %d\n" +
-                    "🔄 Circuit: %s\n" +
-                    "🟢 Départ: %.6f, %.6f\n" +
-                    "🔴 Position actuelle: %.6f, %.6f\n\n" +
-                    "💾 Statut: Prêt à être sauvegardé",
+                    " STATISTIQUES AVANCÉES DU TRAJET\n\n" +
+                    " Durée totale: %02d:%02d:%02d\n" +
+                    " Durée active: %02d:%02d:%02d\n" +
+                    "⏸ Temps de pause: %d s\n" +
+                    " Distance parcourue: %.2f km\n" +
+                    " Distance à vol d'oiseau: %.2f km\n" +
+                    " Vitesse moyenne: %.2f km/h\n" +
+                    " Vitesse maximale: %.2f km/h\n" +
+                    " Vitesse actuelle: %.2f km/h\n" +
+                    " Nombre de points: %d\n" +
+                    " Circuit: %s\n" +
+                    " Départ: %.6f, %.6f\n" +
+                    " Position actuelle: %.6f, %.6f\n\n" +
+                    " Statut: Prêt à être sauvegardé",
                     hours, minutes, seconds,
                     activeHrs, activeMin, activeSec,
                     totalPauseTime / 1000,
